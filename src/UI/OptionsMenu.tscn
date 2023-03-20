@@ -1,0 +1,226 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/UI/fonts/main_font_bold_large.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/UI/fonts/main_font_bold.tres" type="DynamicFont" id=2]
+[ext_resource path="res://assets/UI/ui1.png" type="Texture" id=3]
+[ext_resource path="res://assets/UI/Buttons/button_theme.tres" type="Theme" id=4]
+[ext_resource path="res://src/UI/OptionsMenu.cs" type="Script" id=5]
+[ext_resource path="res://src/UI/ColourButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://src/UI/ColourMenu.tscn" type="PackedScene" id=7]
+
+[node name="OptionsMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -281.0
+margin_bottom = -90.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+margin_right = 481.0
+margin_bottom = 480.0
+texture = ExtResource( 3 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="."]
+margin_top = 6.0
+margin_right = 478.0
+margin_bottom = 480.0
+custom_fonts/font = ExtResource( 1 )
+text = "OPTIONS"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Options" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Volume" type="HSlider" parent="Options"]
+margin_left = 133.0
+margin_top = 78.0
+margin_right = 312.0
+margin_bottom = 94.0
+focus_mode = 0
+min_value = -100.0
+max_value = 0.0
+value = -26.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Options/Volume"]
+margin_left = -56.7518
+margin_top = -2.95561
+margin_right = -3.75184
+margin_bottom = 15.0444
+custom_fonts/font = ExtResource( 2 )
+text = "Volume:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthbarMode" type="OptionButton" parent="Options"]
+margin_left = 133.968
+margin_top = 103.097
+margin_right = 311.968
+margin_bottom = 130.097
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Never"
+items = [ "Never", null, false, 0, null, "Always", null, false, 1, null, "Only when damaged", null, false, 2, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Options/HealthbarMode"]
+margin_left = -114.427
+margin_top = 3.19275
+margin_right = -8.42748
+margin_bottom = 21.1927
+custom_fonts/font = ExtResource( 2 )
+text = "Show healthbars:"
+
+[node name="HealthbarStyle" type="OptionButton" parent="Options"]
+margin_left = 133.968
+margin_top = 140.097
+margin_right = 311.968
+margin_bottom = 167.097
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Block"
+items = [ "Block", null, false, 0, null, "Bar", null, false, 1, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Options/HealthbarStyle"]
+margin_left = -103.832
+margin_top = 3.72249
+margin_right = 2.16715
+margin_bottom = 21.7225
+custom_fonts/font = ExtResource( 2 )
+text = "Healthbar style:"
+
+[node name="ColourWholeUnit" type="CheckBox" parent="Options"]
+margin_left = 127.552
+margin_top = 174.389
+margin_right = 151.552
+margin_bottom = 198.389
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Label" type="Label" parent="Options/ColourWholeUnit"]
+margin_left = -112.416
+margin_top = 1.69539
+margin_right = -2.41563
+margin_bottom = 19.6954
+custom_fonts/font = ExtResource( 2 )
+text = "Colour whole unit:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="checkbox" type="CheckBox" parent="Options"]
+visible = false
+margin_left = 127.552
+margin_top = 262.389
+margin_right = 151.552
+margin_bottom = 286.389
+focus_mode = 0
+enabled_focus_mode = 0
+
+[node name="Label" type="Label" parent="Options/checkbox"]
+margin_left = -109.416
+margin_top = -19.3046
+margin_right = 0.584373
+margin_bottom = 19.6954
+custom_fonts/font = ExtResource( 2 )
+text = "Focus window
+when it's my turn:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FriendlyColour" parent="Options" instance=ExtResource( 6 )]
+margin_left = 132.051
+margin_top = 203.868
+margin_right = 110.051
+margin_bottom = 183.868
+
+[node name="ColourMenu" parent="Options/FriendlyColour" instance=ExtResource( 7 )]
+visible = false
+
+[node name="Label" type="Label" parent="Options/FriendlyColour"]
+margin_left = -98.6394
+margin_top = -0.110031
+margin_right = 11.361
+margin_bottom = 17.89
+custom_fonts/font = ExtResource( 2 )
+text = "Friendly colour:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnemyColour" parent="Options" instance=ExtResource( 6 )]
+margin_left = 275.942
+margin_top = 203.911
+margin_right = 275.942
+margin_bottom = 203.911
+
+[node name="ColourMenu" parent="Options/EnemyColour" instance=ExtResource( 7 )]
+visible = false
+
+[node name="Label" type="Label" parent="Options/EnemyColour"]
+margin_left = -90.6394
+margin_top = -0.110031
+margin_right = 19.361
+margin_bottom = 17.89
+custom_fonts/font = ExtResource( 2 )
+text = "Enemy colour:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Save" type="Button" parent="."]
+margin_left = 409.683
+margin_top = 435.794
+margin_right = 466.683
+margin_bottom = 462.832
+rect_pivot_offset = Vector2( 57, 27.0375 )
+focus_mode = 0
+theme = ExtResource( 4 )
+text = "Save"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cancel" type="Button" parent="."]
+margin_left = 11.6835
+margin_top = 437.794
+margin_right = 68.6835
+margin_bottom = 464.832
+rect_pivot_offset = Vector2( 57, 27.0375 )
+theme = ExtResource( 4 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="Save" to="." method="_on_Save_pressed"]
+[connection signal="pressed" from="Cancel" to="." method="_on_Cancel_pressed"]

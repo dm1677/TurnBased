@@ -1,0 +1,397 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://src/UI/Lobby.cs" type="Script" id=1]
+[ext_resource path="res://src/UI/ChatBox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/UI/LobbyPlayers.cs" type="Script" id=3]
+[ext_resource path="res://assets/UI/menu_background.png" type="Texture" id=4]
+[ext_resource path="res://assets/UI/tblogo1.png" type="Texture" id=5]
+[ext_resource path="res://assets/UI/ui1.png" type="Texture" id=6]
+[ext_resource path="res://assets/UI/Buttons/button_theme.tres" type="Theme" id=7]
+[ext_resource path="res://assets/UI/fonts/main_font_bold.tres" type="DynamicFont" id=8]
+
+[node name="Lobby" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -30.0
+margin_top = -19.0
+margin_right = -30.0
+margin_bottom = -19.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="Node2D" parent="."]
+position = Vector2( 33.1492, 25.2583 )
+
+[node name="menu_background4" type="Sprite" parent="Background"]
+position = Vector2( -176.193, 41.049 )
+texture = ExtResource( 4 )
+
+[node name="LobbyPanel" type="NinePatchRect" parent="."]
+margin_left = 298.0
+margin_top = 238.0
+margin_right = 523.0
+margin_bottom = 503.0
+texture = ExtResource( 6 )
+patch_margin_left = 33
+patch_margin_top = 32
+patch_margin_right = 31
+patch_margin_bottom = 30
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tblogo1" type="Sprite" parent="LobbyPanel"]
+position = Vector2( 98.2403, -105.415 )
+scale = Vector2( 0.465398, 0.462604 )
+texture = ExtResource( 5 )
+
+[node name="Create" type="Button" parent="LobbyPanel"]
+margin_left = 25.0
+margin_top = 67.0
+margin_right = 200.0
+margin_bottom = 90.0376
+focus_mode = 0
+theme = ExtResource( 7 )
+text = "Create"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Join" type="Button" parent="LobbyPanel"]
+margin_left = 25.0
+margin_top = 100.0
+margin_right = 200.0
+margin_bottom = 127.038
+focus_mode = 0
+theme = ExtResource( 7 )
+text = "Join"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Singleplayer" type="Button" parent="LobbyPanel"]
+margin_left = 25.0
+margin_top = 135.0
+margin_right = 200.0
+margin_bottom = 162.038
+theme = ExtResource( 7 )
+text = "Singleplayer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Button" parent="LobbyPanel"]
+margin_left = 25.0
+margin_top = 214.0
+margin_right = 200.0
+margin_bottom = 241.038
+focus_mode = 0
+theme = ExtResource( 7 )
+text = "Exit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Standby" type="Label" parent="LobbyPanel"]
+margin_left = 1.0
+margin_top = 8.5
+margin_right = 226.0
+margin_bottom = 22.5
+align = 1
+
+[node name="InputName" type="LineEdit" parent="LobbyPanel"]
+margin_left = 75.0
+margin_top = 26.0
+margin_right = 198.0
+margin_bottom = 50.0
+context_menu_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="LobbyPanel/InputName"]
+margin_left = -46.449
+margin_top = 4.47195
+margin_right = -7.44897
+margin_bottom = 22.472
+custom_fonts/font = ExtResource( 8 )
+text = "Name:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SetupPanel" type="NinePatchRect" parent="."]
+visible = false
+margin_left = 213.847
+margin_top = 118.839
+margin_right = 632.847
+margin_bottom = 465.839
+texture = ExtResource( 6 )
+patch_margin_left = 33
+patch_margin_top = 32
+patch_margin_right = 31
+patch_margin_bottom = 32
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="TimerPanel" type="NinePatchRect" parent="SetupPanel"]
+margin_left = 12.0
+margin_top = 12.0
+margin_right = 190.0
+margin_bottom = 133.0
+texture = ExtResource( 6 )
+region_rect = Rect2( 0, 0, 96, 96 )
+patch_margin_left = 8
+patch_margin_top = 8
+patch_margin_right = 8
+patch_margin_bottom = 8
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimerType" type="Label" parent="SetupPanel/TimerPanel"]
+margin_left = 6.0
+margin_top = 8.99998
+margin_right = 81.0
+margin_bottom = 23.0
+custom_fonts/font = ExtResource( 8 )
+text = "Timer Type:"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TimerTypeSelect" type="OptionButton" parent="SetupPanel/TimerPanel/TimerType"]
+margin_left = 85.0
+margin_right = 159.0
+margin_bottom = 20.0
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Time" type="Label" parent="SetupPanel/TimerPanel"]
+margin_left = 10.0
+margin_top = 61.0
+margin_right = 81.0
+margin_bottom = 79.0
+custom_fonts/font = ExtResource( 8 )
+text = "Time:"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Input" type="SpinBox" parent="SetupPanel/TimerPanel/Time"]
+margin_left = 81.0
+margin_top = -2.29959
+margin_right = 155.0
+margin_bottom = 21.7004
+min_value = 3.0
+max_value = 3600.0
+page = 5.0
+value = 300.0
+suffix = "s"
+
+[node name="Increment" type="Label" parent="SetupPanel/TimerPanel"]
+margin_left = 10.0
+margin_top = 91.0
+margin_right = 81.0
+margin_bottom = 109.0
+custom_fonts/font = ExtResource( 8 )
+text = "Increment:"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Input" type="SpinBox" parent="SetupPanel/TimerPanel/Increment"]
+margin_left = 81.0
+margin_top = -2.0
+margin_right = 155.0
+margin_bottom = 22.0
+max_value = 60.0
+page = 5.0
+value = 5.0
+suffix = "s"
+
+[node name="KingCount" type="Label" parent="SetupPanel/TimerPanel"]
+margin_left = 6.0
+margin_top = 37.0
+margin_right = 81.0
+margin_bottom = 55.0
+custom_fonts/font = ExtResource( 8 )
+text = "King Count:"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="KingCountSelect" type="OptionButton" parent="SetupPanel/TimerPanel/KingCount"]
+margin_left = 85.0
+margin_right = 159.0
+margin_bottom = 20.0
+text = "2"
+flat = true
+items = [ "1", null, false, 0, null, "2", null, false, 1, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartGameButton" type="Button" parent="SetupPanel"]
+margin_left = 300.246
+margin_top = 272.011
+margin_right = 404.246
+margin_bottom = 299.049
+theme = ExtResource( 7 )
+disabled = true
+text = "Start Game"
+
+[node name="CancelCreate" type="Button" parent="SetupPanel"]
+margin_left = 299.516
+margin_top = 307.209
+margin_right = 404.516
+margin_bottom = 334.247
+theme = ExtResource( 7 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReplayButton" type="Button" parent="SetupPanel"]
+margin_left = 290.733
+margin_top = 11.4788
+margin_right = 408.733
+margin_bottom = 31.4788
+theme = ExtResource( 7 )
+text = "Load Replay"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReplayFile" type="FileDialog" parent="SetupPanel/ReplayButton"]
+margin_left = 112.046
+margin_top = -26.8702
+margin_right = 562.046
+margin_bottom = 202.13
+popup_exclusive = true
+window_title = "Load Replay"
+mode_overrides_title = false
+mode = 0
+access = 2
+filters = PoolStringArray( "*.tbr ; Replay File" )
+current_dir = "/Godot/Projects/Turn Based"
+current_file = "LastReplay.tbr"
+current_path = "/Godot/Projects/Turn Based/LastReplay.tbr"
+
+[node name="ChatBox" parent="SetupPanel" instance=ExtResource( 2 )]
+margin_left = 6.44574
+margin_top = 226.668
+margin_right = 6.24573
+margin_bottom = 226.668
+
+[node name="Players" type="VBoxContainer" parent="SetupPanel"]
+margin_left = 12.0
+margin_top = 137.0
+margin_right = 187.0
+margin_bottom = 221.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="tblogo1" type="Sprite" parent="SetupPanel"]
+position = Vector2( -106.883, -51.5493 )
+scale = Vector2( 0.263924, 0.263924 )
+texture = ExtResource( 5 )
+
+[node name="IPPanel" type="NinePatchRect" parent="."]
+visible = false
+margin_left = 304.0
+margin_top = 244.0
+margin_right = 516.0
+margin_bottom = 345.0
+texture = ExtResource( 6 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[node name="InputIP" type="LineEdit" parent="IPPanel"]
+margin_left = 74.6697
+margin_top = 30.0
+margin_right = 196.67
+margin_bottom = 54.0
+text = "127.0.0.1"
+caret_blink = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IP" type="Label" parent="IPPanel/InputIP"]
+margin_left = -57.8522
+margin_top = 2.97909
+margin_right = -3.85218
+margin_bottom = 20.9791
+custom_fonts/font = ExtResource( 8 )
+text = "Enter IP:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmIP" type="Button" parent="IPPanel"]
+margin_left = 142.586
+margin_top = 62.6618
+margin_right = 196.586
+margin_bottom = 89.6994
+theme = ExtResource( 7 )
+text = "OK"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Cancel" type="Button" parent="IPPanel"]
+margin_left = 17.4177
+margin_top = 63.8354
+margin_right = 79.4177
+margin_bottom = 90.873
+theme = ExtResource( 7 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Status" type="Label" parent="IPPanel"]
+margin_top = 9.19238
+margin_right = 209.0
+margin_bottom = 24.1924
+align = 1
+
+[node name="tblogo2" type="Sprite" parent="IPPanel"]
+position = Vector2( 92.5683, -111 )
+scale = Vector2( 0.465398, 0.462604 )
+texture = ExtResource( 5 )
+[connection signal="visibility_changed" from="LobbyPanel" to="." method="_on_LobbyPanel_visibility_changed"]
+[connection signal="pressed" from="LobbyPanel/Create" to="." method="_on_CreateButton_pressed"]
+[connection signal="pressed" from="LobbyPanel/Join" to="." method="_on_JoinButton_pressed"]
+[connection signal="pressed" from="LobbyPanel/Singleplayer" to="." method="_on_Singleplayer_pressed"]
+[connection signal="pressed" from="LobbyPanel/Exit" to="." method="_on_ExitButton_pressed"]
+[connection signal="item_selected" from="SetupPanel/TimerPanel/TimerType/TimerTypeSelect" to="." method="_on_TimerTypeSelect_item_selected"]
+[connection signal="value_changed" from="SetupPanel/TimerPanel/Time/Input" to="." method="_on_Input_value_changed"]
+[connection signal="value_changed" from="SetupPanel/TimerPanel/Increment/Input" to="." method="_on_IncrementInput_value_changed"]
+[connection signal="item_selected" from="SetupPanel/TimerPanel/KingCount/KingCountSelect" to="." method="_on_KingCount_item_selected"]
+[connection signal="pressed" from="SetupPanel/StartGameButton" to="." method="_on_Start_Game_pressed"]
+[connection signal="pressed" from="SetupPanel/CancelCreate" to="." method="_on_CancelCreate_pressed"]
+[connection signal="pressed" from="SetupPanel/ReplayButton" to="." method="_on_ReplayButton_pressed"]
+[connection signal="file_selected" from="SetupPanel/ReplayButton/ReplayFile" to="." method="_on_ReplayFile_file_selected"]
+[connection signal="pressed" from="IPPanel/ConfirmIP" to="." method="_on_ConfirmIP_pressed"]
+[connection signal="pressed" from="IPPanel/Cancel" to="." method="_on_Cancel_pressed"]

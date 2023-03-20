@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EC9FBE33-FA26-4F0C-BFD6-054FC914BFAF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <OutputPath>.mono\temp\bin\$(Configuration)</OutputPath>
+    <RootNamespace>TurnBased</RootNamespace>
+    <AssemblyName>Turn Based</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <GodotProjectGeneratorVersion>1.0.7374.16792</GodotProjectGeneratorVersion>
+    <BaseIntermediateOutputPath>.mono\temp\obj</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)</IntermediateOutputPath>
+    <ApiConfiguration Condition=" '$(Configuration)' != 'ExportRelease' ">Debug</ApiConfiguration>
+    <ApiConfiguration Condition=" '$(Configuration)' == 'ExportRelease' ">Release</ApiConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ExportDebug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>$(GodotDefineConstants);GODOT;DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'ExportRelease|AnyCPU' ">
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>$(GodotDefineConstants);GODOT;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>$(GodotDefineConstants);GODOT;DEBUG;TOOLS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GodotSharp">
+      <Private>False</Private>
+      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GodotSharpEditor" Condition=" '$(Configuration)' == 'Debug' ">
+      <Private>False</Private>
+      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharpEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\AI\AIActions\AIAction.cs" />
+    <Compile Include="src\AI\AIActions\AIAttackAction.cs" />
+    <Compile Include="src\AI\AIActions\AICreateAction.cs" />
+    <Compile Include="src\AI\AIActions\AIMoveAction.cs" />
+    <Compile Include="src\Actions\SwapAction.cs" />
+    <Compile Include="src\AI\AI.cs" />
+    <Compile Include="src\AI\AIActions\AISwapAction.cs" />
+    <Compile Include="src\AI\AIManager.cs" />
+    <Compile Include="src\AI\Evaluator.cs" />
+    <Compile Include="src\AI\MinimaxNode.cs" />
+    <Compile Include="src\ColourMod.cs" />
+    <Compile Include="src\Components\Swap.cs" />
+    <Compile Include="src\Coords.cs" />
+    <Compile Include="src\Enums.cs" />
+    <Compile Include="src\GameInfo.cs" />
+    <Compile Include="src\NATTraversal.cs" />
+    <Compile Include="src\Options.cs" />
+    <Compile Include="src\PlayerInfo.cs" />
+    <Compile Include="src\UI\ColourButton.cs" />
+    <Compile Include="src\UI\ColourMenu.cs" />
+    <Compile Include="src\Scenes\HealthNode.cs" />
+    <Compile Include="src\Scenes\RenderEntity.cs" />
+    <Compile Include="src\AI\TreeSearchNode.cs" />
+    <Compile Include="src\GameState.cs" />
+    <Compile Include="src\ComponentFactory.UnitData.cs" />
+    <Compile Include="src\Components\GResource.cs" />
+    <Compile Include="src\Components\Timer.cs" />
+    <Compile Include="src\GameSystem.cs" />
+    <Compile Include="src\Components\Name.cs" />
+    <Compile Include="src\Handlers\EntityHandler.cs" />
+    <Compile Include="src\Handlers\ResourceHandler.cs" />
+    <Compile Include="src\Handlers\TimerHandler.cs" />
+    <Compile Include="src\Player.cs" />
+    <Compile Include="src\Scenes\Sound.cs" />
+    <Compile Include="src\Sync.cs" />
+    <Compile Include="src\UI\BuildUnit.cs" />
+    <Compile Include="src\UI\ChatBox.cs" />
+    <Compile Include="src\UI\GameUI.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="src\Actions\Action.cs" />
+    <Compile Include="src\Actions\AttackAction.cs" />
+    <Compile Include="src\Actions\CreateAction.cs" />
+    <Compile Include="src\Actions\MoveAction.cs" />
+    <Compile Include="src\ComponentFactory.cs" />
+    <Compile Include="src\Components\Component.cs" />
+    <Compile Include="src\Components\Health.cs" />
+    <Compile Include="src\Components\Movement.cs" />
+    <Compile Include="src\Components\Position.cs" />
+    <Compile Include="src\Components\Sprite.cs" />
+    <Compile Include="src\Components\Owner.cs" />
+    <Compile Include="src\Components\Weapon.cs" />
+    <Compile Include="src\Entity.cs" />
+    <Compile Include="src\EntityManager.cs" />
+    <Compile Include="src\Handlers\HealthHandler.cs" />
+    <Compile Include="src\InputHelper.cs" />
+    <Compile Include="src\Scenes\GameSetup.cs" />
+    <Compile Include="src\UI\Lobby.cs" />
+    <Compile Include="src\Map.cs" />
+    <Compile Include="src\Handlers\MovementHandler.cs" />
+    <Compile Include="src\Scenes\Game.cs" />
+    <Compile Include="src\Scenes\Render.cs" />
+    <Compile Include="src\Handlers\IHandler.cs" />
+    <Compile Include="src\Handlers\HandlerManager.cs" />
+    <Compile Include="src\Tile.cs" />
+    <Compile Include="src\Components\TileComponents\Passable.cs" />
+    <Compile Include="src\Components\TileComponents\TileSprite.cs" />
+    <Compile Include="src\Components\TileComponents\TileComponent.cs" />
+    <Compile Include="src\Turn.cs" />
+    <Compile Include="src\UI\LobbyPlayers.cs" />
+    <Compile Include="src\UI\OptionsMenu.cs" />
+    <Compile Include="src\UI\UIElements\UnitButton.cs" />
+    <Compile Include="src\UI\UIElements\UILabelDamage.cs" />
+    <Compile Include="src\UI\UIElements\UILabel.cs" />
+    <Compile Include="src\UI\UIElements\UILabelTimer.cs" />
+    <Compile Include="src\UI\UIElements\UILabelResource.cs" />
+    <Compile Include="src\UI\UIElements\UILabelTurn.cs" />
+    <Compile Include="src\UI\UIElements\UILabelName.cs" />
+    <Compile Include="src\UI\UIElements\UILabelHealth.cs" />
+    <Compile Include="src\UnitClass.cs" />
+    <Compile Include="src\UnitState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
+      <Version>1.0.0</Version>
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

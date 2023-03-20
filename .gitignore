@@ -1,0 +1,16 @@
+.import/
+.mono/
+.vs/
+Properties/
+Replays/
+Turn Based.csproj.old
+Turn Based.csproj.user
+Turn Based.sln.old
+assets/
+default_env.tres
+export/
+export_presets.cfg
+icon.ico
+icon.png
+icon.png.import
+options.dat

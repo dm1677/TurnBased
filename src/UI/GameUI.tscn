@@ -1,0 +1,222 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://src/UI/GameUI.cs" type="Script" id=1]
+[ext_resource path="res://src/UI/BuildUnit.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/UI/Buttons/volume.png" type="Texture" id=3]
+[ext_resource path="res://assets/UI/Buttons/volume_muted.png" type="Texture" id=4]
+[ext_resource path="res://assets/UI/ui1.png" type="Texture" id=5]
+[ext_resource path="res://assets/UI/Buttons/button_theme.tres" type="Theme" id=6]
+[ext_resource path="res://assets/UI/fonts/timer_font.tres" type="DynamicFont" id=7]
+[ext_resource path="res://assets/UI/fonts/timer_label_font.tres" type="DynamicFont" id=8]
+[ext_resource path="res://assets/UI/Buttons/options_button.png" type="Texture" id=9]
+[ext_resource path="res://src/UI/OptionsMenu.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/UI/Buttons/options_button_pressed.png" type="Texture" id=11]
+[ext_resource path="res://assets/UI/Buttons/options_button_hover.png" type="Texture" id=12]
+
+[sub_resource type="StyleBoxLine" id=1]
+
+[node name="GameUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 49.5117
+margin_top = 30.1206
+margin_right = 49.5117
+margin_bottom = 30.1205
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BuildUnit" parent="." instance=ExtResource( 2 )]
+margin_left = -51.0255
+margin_top = 443.796
+margin_right = -327.025
+margin_bottom = -30.2041
+
+[node name="Panel" type="NinePatchRect" parent="."]
+anchor_left = -0.00147495
+anchor_right = -0.00147495
+margin_left = 430.122
+margin_top = -30.0
+margin_right = 712.122
+margin_bottom = 542.0
+texture = ExtResource( 5 )
+patch_margin_left = 32
+patch_margin_top = 32
+patch_margin_right = 32
+patch_margin_bottom = 32
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SurrenderButton" type="Button" parent="Panel"]
+margin_left = 35.941
+margin_top = 520.881
+margin_right = 246.941
+margin_bottom = 552.881
+focus_mode = 1
+theme = ExtResource( 6 )
+text = "Surrender"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SurrenderConfirmation" type="ConfirmationDialog" parent="Panel/SurrenderButton"]
+margin_left = -40.9406
+margin_top = -548.881
+margin_right = 181.059
+margin_bottom = -478.881
+popup_exclusive = true
+window_title = "Surrender"
+dialog_text = "Do you really wish to surrender?"
+
+[node name="RematchButton" type="Button" parent="Panel"]
+visible = false
+margin_left = 36.2227
+margin_top = 492.0
+margin_right = 247.223
+margin_bottom = 515.038
+theme = ExtResource( 6 )
+disabled = true
+text = "Rematch"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VolumeButton" type="CheckBox" parent="Panel"]
+visible = false
+margin_left = 256.488
+margin_top = 2.21066
+margin_right = 280.488
+margin_bottom = 26.2107
+focus_mode = 0
+custom_icons/checked = ExtResource( 4 )
+custom_icons/unchecked = ExtResource( 3 )
+custom_styles/focus = SubResource( 1 )
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsButton" type="TextureButton" parent="Panel"]
+margin_left = 258.0
+margin_top = 8.0
+margin_right = 274.0
+margin_bottom = 24.0
+focus_mode = 0
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 11 )
+texture_hover = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReplayNode" type="Control" parent="Panel"]
+visible = false
+margin_top = -150.0
+margin_bottom = -150.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReplayForward" type="Button" parent="Panel/ReplayNode"]
+margin_left = 189.066
+margin_top = 480.343
+margin_right = 221.066
+margin_bottom = 512.343
+rect_pivot_offset = Vector2( 41.9572, 17 )
+focus_mode = 0
+theme = ExtResource( 6 )
+text = ">"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ReplayBackward" type="Button" parent="Panel/ReplayNode"]
+margin_left = 61.0659
+margin_top = 480.343
+margin_right = 93.0659
+margin_bottom = 512.343
+rect_pivot_offset = Vector2( 41.9572, 17 )
+focus_mode = 0
+theme = ExtResource( 6 )
+text = "<"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TurnCount" type="Label" parent="Panel/ReplayNode"]
+margin_left = 94.0
+margin_top = 481.0
+margin_right = 190.0
+margin_bottom = 511.0
+text = "Turn: 0"
+align = 1
+valign = 1
+
+[node name="TimerInfo" type="Control" parent="Panel"]
+margin_top = 100.0
+margin_bottom = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer1" type="Label" parent="Panel/TimerInfo"]
+margin_left = 13.0
+margin_right = 118.0
+margin_bottom = 73.0
+custom_fonts/font = ExtResource( 7 )
+text = "00:00"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="Panel/TimerInfo/Timer1"]
+margin_top = -21.0
+margin_right = 105.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 8 )
+text = "Player 1:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer2" type="Label" parent="Panel/TimerInfo"]
+margin_left = 13.0
+margin_top = 88.0
+margin_right = 118.0
+margin_bottom = 161.0
+custom_fonts/font = ExtResource( 7 )
+text = "00:00"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="Panel/TimerInfo/Timer2"]
+margin_top = -21.0
+margin_right = 105.0
+margin_bottom = 52.0
+custom_fonts/font = ExtResource( 8 )
+text = "Player 2:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsMenu" parent="." instance=ExtResource( 10 )]
+visible = false
+margin_left = -50.2316
+margin_top = -29.6594
+margin_right = -331.232
+margin_bottom = -119.659
+[connection signal="pressed" from="Panel/SurrenderButton" to="." method="_on_SurrenderButton_pressed"]
+[connection signal="confirmed" from="Panel/SurrenderButton/SurrenderConfirmation" to="." method="_on_SurrenderConfirmation_confirmed"]
+[connection signal="pressed" from="Panel/RematchButton" to="." method="_on_RematchButton_pressed"]
+[connection signal="pressed" from="Panel/VolumeButton" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="Panel/OptionsButton" to="." method="_on_Options_pressed"]
+[connection signal="pressed" from="Panel/ReplayNode/ReplayForward" to="." method="_on_ReplayForward_pressed"]
+[connection signal="pressed" from="Panel/ReplayNode/ReplayBackward" to="." method="_on_ReplayBackward_pressed"]
