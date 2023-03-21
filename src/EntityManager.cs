@@ -142,6 +142,13 @@ public class EntityManager
         }
     }
 
+    public TComponent AddComponent<TComponent>(Entity entity) where TComponent : Component, new()
+    {
+        TComponent component = new TComponent();
+        AddComponent(entity, component);
+        return component;
+    }
+
     public void RemoveComponent(Entity entity, Component component)
     {
         if (component != null)

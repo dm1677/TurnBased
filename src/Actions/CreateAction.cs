@@ -23,10 +23,7 @@ public class CreateAction : Action
 	{
         if (CreatedEntity == null)
         {
-            CreatedEntity = ComponentFactory.Instance().CreateUnit(X, Y, (Unit)UnitType);
-
-            var component = new Owner() { ownedBy = (User)Owner };
-            GameSystem.EntityManager.AddComponent(CreatedEntity, component);
+            CreatedEntity = ComponentFactory.Instance().CreateUnit(X, Y, (Unit)UnitType, (User)Owner);
         }
         else
         {

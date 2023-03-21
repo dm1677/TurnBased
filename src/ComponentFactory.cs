@@ -11,20 +11,20 @@ public partial class ComponentFactory
         return componentFactory;
     } 
 
-    public Entity CreateUnit(int x, int y, Unit unit)
+    public Entity CreateUnit(int x, int y, Unit unit, User owner)
     {
         switch(unit)
         {
             case Unit.Prawn:
-                return CreatePrawn(x, y);
+                return CreatePrawn(x, y, owner);
             case Unit.Building:
-                return CreateStatue(x, y);
+                return CreateStatue(x, y, owner);
             case Unit.King:
-                return CreateKing(x, y);
+                return CreateKing(x, y, owner);
             case Unit.Knight:
-                return CreateKnight(x, y);
+                return CreateKnight(x, y, owner);
             case Unit.Gobbo:
-                return CreateGobbo(x, y);
+                return CreateGobbo(x, y, owner);
             case Unit.Tree:
                 return CreateTree(x, y);
         }
@@ -43,42 +43,47 @@ public partial class ComponentFactory
         return entity;
     }
 
-    public Entity CreatePrawn(int x, int y)
+    public Entity CreatePrawn(int x, int y, User owner)
     {
         Entity entity = prawn.Create(x, y);
         prawn.AddMovement(entity);
         GameSystem.EntityManager.AddComponent(entity, new Swap());
+        GameSystem.EntityManager.AddComponent(entity, new Owner() { ownedBy = owner });
 
         return entity;
     }
 
-    public Entity CreateKing(int x, int y)
+    public Entity CreateKing(int x, int y, User owner)
     {
         Entity entity = king.Create(x, y);
         king.AddMovement(entity);
+        GameSystem.EntityManager.AddComponent(entity, new Owner() { ownedBy = owner });
 
         return entity;
     }
 
-    public Entity CreateKnight(int x, int y)
+    public Entity CreateKnight(int x, int y, User owner)
     {
         Entity entity = knight.Create(x, y);
         knight.AddMovement(entity);
+        GameSystem.EntityManager.AddComponent(entity, new Owner() { ownedBy = owner });
 
         return entity;
     }
 
-    public Entity CreateStatue(int x, int y)
+    public Entity CreateStatue(int x, int y, User owner)
     {
         Entity entity = statue.Create(x, y);
+        GameSystem.EntityManager.AddComponent(entity, new Owner() { ownedBy = owner });
 
         return entity;
     }
 
-    public Entity CreateGobbo(int x, int y)
+    public Entity CreateGobbo(int x, int y, User owner)
     {
         Entity entity = gobbo.Create(x, y);
         gobbo.AddMovement(entity);
+        GameSystem.EntityManager.AddComponent(entity, new Owner() { ownedBy = owner });
 
         return entity;
     }

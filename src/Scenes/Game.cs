@@ -216,25 +216,21 @@ public class Game : Node2D
     //Temporary
     void CreateKings()
     {
-        var king = ComponentFactory.Instance().CreateUnit(0, 0, Unit.King);
-        GameSystem.EntityManager.AddComponent(king, new Owner() { ownedBy = User.Player });
+        var king = ComponentFactory.Instance().CreateUnit(0, 0, Unit.King, User.Player);
         kingMovementComponents[0] = GameSystem.EntityManager.GetComponent<Movement>(king);
         kingMovementComponents[0].Disabled = true;
 
-        king = ComponentFactory.Instance().CreateUnit(_mapWidth - 1, _mapHeight - 1, Unit.King);
-        GameSystem.EntityManager.AddComponent(king, new Owner() { ownedBy = User.Enemy });
+        king = ComponentFactory.Instance().CreateUnit(_mapWidth - 1, _mapHeight - 1, Unit.King, User.Enemy);
         kingMovementComponents[1] = GameSystem.EntityManager.GetComponent<Movement>(king);
         kingMovementComponents[1].Disabled = true;
 
         //if (gameInfo.KingCount == 1) //fix replay king count
         {
-            king = ComponentFactory.Instance().CreateUnit(_mapWidth - 1, 0, Unit.King);
-            GameSystem.EntityManager.AddComponent(king, new Owner() { ownedBy = User.Enemy });
+            king = ComponentFactory.Instance().CreateUnit(_mapWidth - 1, 0, Unit.King, User.Enemy);
             kingMovementComponents[2] = GameSystem.EntityManager.GetComponent<Movement>(king);
             kingMovementComponents[2].Disabled = true;
 
-            king = ComponentFactory.Instance().CreateUnit(0, _mapHeight - 1, Unit.King);
-            GameSystem.EntityManager.AddComponent(king, new Owner() { ownedBy = User.Player });
+            king = ComponentFactory.Instance().CreateUnit(0, _mapHeight - 1, Unit.King, User.Player);
             kingMovementComponents[3] = GameSystem.EntityManager.GetComponent<Movement>(king);
             kingMovementComponents[3].Disabled = true;
         }
