@@ -9,6 +9,9 @@ public class Game : Node2D
     const int _mapWidth = 15;
     const int _mapHeight = 15;
 
+    private const string UIScenePath = "res://src/UI/GameUI.tscn";
+    private const string RenderScenePath = "res://src/Scenes/Render.tscn";
+
     //Godot: Parent nodes with networking information
     GameSetup gameSetup;
     public GameUI UI { get; private set; }
@@ -20,8 +23,6 @@ public class Game : Node2D
 
     public GameContextManager ContextManager { get; private set; }
     public Turn Turn { get; private set; }
-
-    public HashSet<PlayerInfo> playerInfo;
 
     public bool IsReplay { get => ContextManager.IsReplay; }
     public bool IsSingleplayer { get => ContextManager.GameInfo.Singleplayer; }
@@ -36,8 +37,7 @@ public class Game : Node2D
         var actionManager = new GameActionManager();
         Turn = new Turn(actionManager, ContextManager, new HandlerManager(actionManager));
 
-        playerInfo = playerInfoList;
-        Instantiate();
+        Instantiate(playerInfoList);
 
         if (gameInfo.GameType == GameType.Replay)
             UI.DisableSurrender();
@@ -47,7 +47,7 @@ public class Game : Node2D
     }
 
     //Must call this first for everything to work!
-    void Instantiate()
+    void Instantiate(HashSet<PlayerInfo> playerInfo)
     {
         gameSetup = (GameSetup)GetParent();
         sync = gameSetup.sync;
@@ -55,8 +55,8 @@ public class Game : Node2D
         InitialiseGameSystem(this, _mapWidth, _mapHeight, playerInfo);
         CreateStartingEntities();
 
-        render = (Render)InstantiateChildNode(GD.Load("res://src/Scenes/Render.tscn"));
-        UI = (GameUI)InstantiateChildNode(GD.Load("res://src/UI/GameUI.tscn"));
+        render = (Render)InstantiateChildNode(GD.Load(RenderScenePath));
+        UI = (GameUI)InstantiateChildNode(GD.Load(UIScenePath));
     }
 
     //Temporary
