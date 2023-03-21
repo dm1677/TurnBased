@@ -224,6 +224,8 @@ public class Turn
             lastAction.Undo();
 
             handlerManager.ReverseHandlers();
+			AdvanceTurnState();
+			DecrementTurnCount();
         }
     }
 }

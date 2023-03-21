@@ -27,17 +27,11 @@ public class HandlerManager
 
     public void ReverseHandlers()
     {
-        var reversedList = new List<IHandler>();
-        reversedList.AddRange(handlerList);
-        reversedList.Reverse();
-
         GameSystem.Game.Turn.AdvanceTurnState();
 
-        foreach (IHandler handler in reversedList)
-            handler.Reverse();
+        for (int i = handlerList.Count - 1; i >= 0; i--)
+            handlerList[i].Reverse();
 
-        GameSystem.Game.Turn.AdvanceTurnState();
-        GameSystem.Game.Turn.DecrementTurnCount();
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         
         System.GC.Collect();
