@@ -19,15 +19,14 @@ public class Game : Node2D
 
     AIManager ai = new AIManager();
 
-    public Sync sync;
-
+    public Sync Sync { get; private set; }
     public GameContextManager ContextManager { get; private set; }
     public Turn Turn { get; private set; }
 
     public bool IsReplay { get => ContextManager.IsReplay; }
     public bool IsSingleplayer { get => ContextManager.GameInfo.Singleplayer; }
     
-    public bool timerDataReceived = false;
+    public bool TimerDataReceived { get; set; } = false;
 
     private readonly Component[] kingMovementComponents = new Component[4];
 
@@ -50,7 +49,7 @@ public class Game : Node2D
     void Instantiate(HashSet<PlayerInfo> playerInfo)
     {
         gameSetup = (GameSetup)GetParent();
-        sync = gameSetup.sync;
+        Sync = gameSetup.sync;
 
         InitialiseGameSystem(this, _mapWidth, _mapHeight, playerInfo);
         CreateStartingEntities();
@@ -72,7 +71,6 @@ public class Game : Node2D
         gameState.AddUnit(new UnitState(Unit.Tree, User.Neutral, 0, 13, 7));
         gameState.AddUnit(new UnitState(Unit.Tree, User.Neutral, 0, 7, 13));
         gameState.AddUnit(new UnitState(Unit.Tree, User.Neutral, 0, 7, 1));
-
 
         foreach (UnitState u in gameState.units)
             ComponentFactory.Instance().CreateUnit(u.X, u.Y, u.UnitType, u.Owner);
@@ -246,7 +244,7 @@ public class Game : Node2D
     void ValidateTimer(Godot.Collections.Array data)
     {
         Enemy.ServerCurrentTime = (float)data[0];
-        timerDataReceived = true;
+        TimerDataReceived = true;
     }
 
     public override void _Process(float delta)

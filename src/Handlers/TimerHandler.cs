@@ -40,10 +40,10 @@ public class TimerHandler : IHandler
             p.ResetTimerSound();
         }
 
-        if (GameSystem.Game.timerDataReceived)
+        if (GameSystem.Game.TimerDataReceived)
             UpdateTimerFromRemoteData();
 
-        GameSystem.Game.timerDataReceived = false;
+        GameSystem.Game.TimerDataReceived = false;
     }
 
     void ProcessTimer(Player p)
@@ -69,9 +69,9 @@ public class TimerHandler : IHandler
 
     void SetRemoteTimer()
     {
-        var timerData = new Godot.Collections.Array { GameSystem.Player.Timer.currentTime - GameSystem.Game.sync.GetDelay() };
+        var timerData = new Godot.Collections.Array { GameSystem.Player.Timer.currentTime - GameSystem.Game.Sync.GetDelay() };
         GameSystem.Game.Rpc("ValidateTimer", timerData);
-        GameSystem.Game.sync.TestDelay();
+        GameSystem.Game.Sync.TestDelay();
     }
 
     void UpdateTimerFromRemoteData()
