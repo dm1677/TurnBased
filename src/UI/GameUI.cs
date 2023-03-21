@@ -27,7 +27,7 @@ public class GameUI : Control
 	{
 		ShowBehindParent = true;
 		chat = (ChatBox)Game.InstantiateChildNode(chatBoxScene, GetNode("Panel"));
-		chat.Initialise(GameSystem.Player.GetName(), 6, 370, 282, 113);
+		chat.Initialise(GameSystem.Game.Player.GetName(), 6, 370, 282, 113);
 
 		optionsMenu = (OptionsMenu)GetNode("OptionsMenu");
 
@@ -84,9 +84,9 @@ public class GameUI : Control
 
 	void SetTimerColour()
 	{
-		timer1Name.Text = Enemy.GetName() + ":";
+		timer1Name.Text = GameSystem.Game.Enemy.GetName() + ":";
 		timer1Name.AddColorOverride("font_color", Options.EnemyColour);
-		timer2Name.Text = GameSystem.Player.GetName() + ":";
+		timer2Name.Text = GameSystem.Game.Player.GetName() + ":";
 		timer2Name.AddColorOverride("font_color", Options.FriendlyColour);
 	}
 
@@ -109,10 +109,10 @@ public class GameUI : Control
 	{
 		turnLabel.Text = "Turn: " + GameSystem.Game.Turn.GetTurnCount();
 
-		var timeSpan = System.TimeSpan.FromMilliseconds(Enemy.Timer.currentTime);
+		var timeSpan = System.TimeSpan.FromMilliseconds(GameSystem.Game.Enemy.Timer.currentTime);
 		timer1.Text = timeSpan.ToString("mm':'ss");
 
-		timeSpan = System.TimeSpan.FromMilliseconds(GameSystem.Player.Timer.currentTime);
+		timeSpan = System.TimeSpan.FromMilliseconds(GameSystem.Game.Player.Timer.currentTime);
 		timer2.Text = timeSpan.ToString("mm':'ss");
 
 		foreach (UILabel label in uiLabels)
