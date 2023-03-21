@@ -14,10 +14,10 @@ public class Player
 
     readonly Stopwatch stopwatch = new Stopwatch();
 
-    public Player(int networkUniqueID, string _name)
+    public Player(int networkUniqueID, string name)
     {
         id = SetPlayerID(networkUniqueID);
-        name = _name;
+        this.name = name;
     }
 
     int SetPlayerID(int networkUniqueID)
