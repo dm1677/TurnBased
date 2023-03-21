@@ -22,6 +22,7 @@ public class Game : Node2D
     public Sync Sync { get; private set; }
     public GameContextManager ContextManager { get; private set; }
     public Turn Turn { get; private set; }
+    public PlayerManager PlayerManager { get; private set; }
 
     public bool IsReplay { get => ContextManager.IsReplay; }
     public bool IsSingleplayer { get => ContextManager.GameInfo.Singleplayer; }
@@ -33,7 +34,8 @@ public class Game : Node2D
     public void Initialise(GameInfo gameInfo, HashSet<PlayerInfo> playerInfoList)
     {
         ContextManager = new GameContextManager(gameInfo);
-        InitialiseGameSystem(this, _mapWidth, _mapHeight, playerInfoList);
+        InitialiseGameSystem(this, _mapWidth, _mapHeight);
+        PlayerManager = new PlayerManager(ContextManager, playerInfoList);
         var actionManager = new GameActionManager();
         Turn = new Turn(actionManager, ContextManager, new HandlerManager(actionManager));
 
