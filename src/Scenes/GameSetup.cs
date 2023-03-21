@@ -33,7 +33,7 @@ public class GameSetup : Node
 	private readonly UPNP upnp = new UPNP();
 	private NetworkedMultiplayerENet connection;
 
-	public HashSet<PlayerInfo> PlayerInfo { private set; get; } = new HashSet<PlayerInfo>();
+	public ICollection<PlayerInfo> PlayerInfo { private set; get; } = new HashSet<PlayerInfo>();
 	private PlayerInfo myInfo;
 
 	// Called when the node enters the scene tree for the first time.

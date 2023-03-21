@@ -31,7 +31,7 @@ public class Game : Node2D
 
     private readonly Component[] kingMovementComponents = new Component[4];
 
-    public void Initialise(GameInfo gameInfo, HashSet<PlayerInfo> playerInfoList)
+    public void Initialise(GameInfo gameInfo, ICollection<PlayerInfo> playerInfoList)
     {
         ContextManager = new GameContextManager(gameInfo);
         InitialiseGameSystem(this, _mapWidth, _mapHeight);
