@@ -22,4 +22,15 @@
     {
         Context = new GameContext(Context.LocalRematch, Context.RemoteRematch, true);
     }
+
+    public void SetLocalRematch()
+    {
+        Context = new GameContext(true, Context.RemoteRematch, Context.GameOver);
+    }
+
+    public void SetRemoteRematch()
+    {
+        Context = new GameContext(Context.LocalRematch, true, Context.GameOver);
+    }
+
 }

@@ -19,7 +19,6 @@ public class Game : Node2D
 
     public Sync sync;
 
-    //public GameInfo gameInfo { get; private set; }
     public GameContextManager ContextManager { get; private set; }
     public Turn Turn { get; private set; }
 
@@ -27,10 +26,8 @@ public class Game : Node2D
 
     public bool IsReplay { get => ContextManager.IsReplay; }
     public bool IsSingleplayer { get => ContextManager.GameInfo.Singleplayer; }
-    //public bool gameOver = false;
+    
     public bool timerDataReceived = false;
-    public bool rematch = false;
-    public bool opponentRematch = false;
 
     private Component[] kingMovementComponents = new Component[4];
 
@@ -340,7 +337,7 @@ public class Game : Node2D
 
     private void CheckRematch()
     {
-        if (rematch && opponentRematch && GetTree().HasNetworkPeer() && GetTree().GetNetworkUniqueId() == 1)
+        if (ContextManager.Context.LocalRematch && ContextManager.Context.RemoteRematch && GetTree().HasNetworkPeer() && GetTree().GetNetworkUniqueId() == 1)
         {
             Rpc("DisposeNode");
             gameSetup.Rpc("StartGame", (object)ContextManager.GameInfo.Serialise());
@@ -376,14 +373,14 @@ public class Game : Node2D
 
     public void Rematch()
     {
-        rematch = true;
+        ContextManager.SetLocalRematch();
         Rpc("SetRematch");
     }
 
     [Remote]
     public void SetRematch()
     {
-        opponentRematch = true;
+        ContextManager.SetRemoteRematch();
     }
 
     public void SetNullSelection() { GameSystem.Input.SetNullSelection(); }
