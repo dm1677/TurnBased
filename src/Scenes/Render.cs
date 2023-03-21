@@ -43,7 +43,7 @@ public class Render : Node2D, IObserver
 	public override void _Ready()
 	{
 		tileSize = GameSystem.Game.GetTileSize();
-		playerID = GameSystem.Player.GetID();
+		playerID = GameSystem.Player.ID;
 
 		GetTextures();
 

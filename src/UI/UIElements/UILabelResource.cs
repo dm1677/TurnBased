@@ -18,7 +18,7 @@ public class UILabelResource : UILabel
 
     void GetPlayerResource()
     {
-        var currentPlayer = GameSystem.Player.GetID();
+        var currentPlayer = GameSystem.Player.ID;
 
         var entityList = GameSystem.EntityManager.GetEntityList().Keys;
         foreach (Entity entity in entityList)

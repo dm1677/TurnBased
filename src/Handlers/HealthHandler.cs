@@ -147,8 +147,8 @@ public class HealthHandler : IHandler
 
         if (owner != null && KingCount((int)owner.ownedBy) <= 1)
         {
-            if (owner.ownedBy == (User)GameSystem.Player.GetID())
-                GameSystem.Game.Rpc("GameResult", Enemy.GetName());
+            if (owner.ownedBy == (User)GameSystem.Player.ID)
+                GameSystem.Game.Rpc("GameResult", Enemy.Name);
             //else if (owner.ownedBy == (Owner.Player)enemy.GetID())
             //    game.Rpc("GameResult", player.GetName());
         }

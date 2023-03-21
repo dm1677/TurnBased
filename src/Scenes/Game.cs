@@ -33,29 +33,23 @@ public class Game : Node2D
     public void Initialise(GameInfo gameInfo, HashSet<PlayerInfo> playerInfoList)
     {
         ContextManager = new GameContextManager(gameInfo);
+        InitialiseGameSystem(this, _mapWidth, _mapHeight, playerInfoList);
         var actionManager = new GameActionManager();
         Turn = new Turn(actionManager, ContextManager, new HandlerManager(actionManager));
 
-        Instantiate(playerInfoList);
-
-        if (gameInfo.GameType == GameType.Replay)
-            UI.DisableSurrender();
-        UI.Initialise();
-        UI.ChatMessage(GameSystem.Player.GetName() + " joined the game!");
-        GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
-    }
-
-    //Must call this first for everything to work!
-    void Instantiate(HashSet<PlayerInfo> playerInfo)
-    {
         gameSetup = (GameSetup)GetParent();
         Sync = gameSetup.sync;
 
-        InitialiseGameSystem(this, _mapWidth, _mapHeight, playerInfo);
         CreateStartingEntities();
 
         render = (Render)InstantiateChildNode(GD.Load(RenderScenePath));
         UI = (GameUI)InstantiateChildNode(GD.Load(UIScenePath));
+
+        if (gameInfo.GameType == GameType.Replay)
+            UI.DisableSurrender();
+        UI.Initialise();
+        UI.ChatMessage(GameSystem.Player.Name + " joined the game!");
+        GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
     }
 
     //Temporary
@@ -148,22 +142,22 @@ public class Game : Node2D
         var timerEntity = ComponentFactory.Instance().CreateTimer(ContextManager.GameInfo.TimerType, 
                                                                   ContextManager.GameInfo.Time,
                                                                   ContextManager.GameInfo.Increment,
-                                                                  GameSystem.Player.GetID());
+                                                                  GameSystem.Player.                                                                  ID);
         GameSystem.Player.SetTimer(timerEntity);
 
         timerEntity = Enemy.TimerEntity = ComponentFactory.Instance().CreateTimer(ContextManager.GameInfo.TimerType,
                                                                                   ContextManager.GameInfo.Time,
                                                                                   ContextManager.GameInfo.Increment,
-                                                                                  Enemy.GetID());
+                                                                                  Enemy.                                                                                  ID);
         Enemy.SetTimer(timerEntity);
     }
 
     void CreateResources()
     {
-        GameSystem.Player.ResourceEntity = ComponentFactory.Instance().CreateResource(GameSystem.Player.GetID());
+        GameSystem.Player.ResourceEntity = ComponentFactory.Instance().CreateResource(GameSystem.Player.ID);
         GameSystem.Player.Resource = GameSystem.EntityManager.GetComponent<GResource>(GameSystem.Player.ResourceEntity);
 
-        Enemy.ResourceEntity = ComponentFactory.Instance().CreateResource(Enemy.GetID());
+        Enemy.ResourceEntity = ComponentFactory.Instance().CreateResource(Enemy.ID);
         Enemy.Resource = GameSystem.EntityManager.GetComponent<GResource>(Enemy.ResourceEntity);
     }
 
@@ -179,7 +173,7 @@ public class Game : Node2D
 
         for (int i = 0; i < kings.Length; i++)
         {
-            kingMovementComponents[i] = GameSystem.EntityManager.GetComponent<Movement>(kings[0]);
+            kingMovementComponents[i] = GameSystem.EntityManager.GetComponent<Movement>(kings[i]);
             kingMovementComponents[i].Disabled = true;
         }
     }

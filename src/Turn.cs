@@ -14,7 +14,7 @@ public class Turn
 	{
 		this.contextManager = contextManager;
 		this.handlerManager = handlerManager;
-		SetTurnState((TurnState)GameSystem.Player.GetID());
+		SetTurnState((TurnState)GameSystem.Player.ID);
 		actionManager = gameActionManager;
 		if (contextManager.IsReplay)
 			actionManager.LoadReplay(contextManager.GameInfo.ReplayPath);
@@ -160,7 +160,7 @@ public class Turn
 	{
         Owner o = GameSystem.EntityManager.GetComponent<Owner>(entity);
         User owner = o.ownedBy;
-		User player = (User)GameSystem.Player.GetID();
+		User player = (User)GameSystem.Player.ID;
         User enemy = (User)GameSystem.Player.GetEnemyID();
 
 		if (owner == player && turnState == TurnState.ProcessMyTurn
@@ -174,7 +174,7 @@ public class Turn
     {
         Owner o = GameSystem.EntityManager.GetComponent<Owner>(entity);
         User owner = o.ownedBy;
-        User player = (User)GameSystem.Player.GetID();
+        User player = (User)GameSystem.Player.ID;
         User enemy = (User)GameSystem.Player.GetEnemyID();
 
         if (owner == player && turnState == TurnState.WaitForInput

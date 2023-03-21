@@ -11,7 +11,7 @@ public class UILabelTimer : UILabel
 	public UILabelTimer(Player player) : base()
 	{
 		timer = player.Timer;
-        playerName = player.GetName();
+        playerName = player.Name;
 
         Label.AddFontOverride("font", font);
 	}

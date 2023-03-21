@@ -27,7 +27,7 @@ public class GameUI : Control
 	{
 		ShowBehindParent = true;
 		chat = (ChatBox)Game.InstantiateChildNode(chatBoxScene, GetNode("Panel"));
-        chat.Initialise(GameSystem.Player.GetName(), 6, 370, 282, 113);
+        chat.Initialise(GameSystem.Player.Name, 6, 370, 282, 113);
 
 		optionsMenu = (OptionsMenu)GetNode("OptionsMenu");
 
@@ -84,9 +84,9 @@ public class GameUI : Control
 
 	void SetTimerColour()
 	{
-		timer1Name.Text = Enemy.GetName() + ":";
+		timer1Name.Text = Enemy.Name + ":";
 		timer1Name.AddColorOverride("font_color", Options.EnemyColour);
-        timer2Name.Text = GameSystem.Player.GetName() + ":";
+        timer2Name.Text = GameSystem.Player.Name + ":";
 		timer2Name.AddColorOverride("font_color", Options.FriendlyColour);
 	}
 
@@ -145,8 +145,8 @@ public class GameUI : Control
 	{
 		DisableSurrender();
 
-        ChatMessage(GameSystem.Player.GetName() + " surrendered!");
-        GameSystem.Game.Rpc("GameResult", Enemy.GetName());
+        ChatMessage(GameSystem.Player.Name + " surrendered!");
+        GameSystem.Game.Rpc("GameResult", Enemy.Name);
 	}
 
 	public void DisableSurrender()

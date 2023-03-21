@@ -3,8 +3,8 @@ using static GameSystem;
 
 public class Player
 {
-    private readonly int id;
-    private readonly string name;
+    public int ID { get; private set; }
+    public string Name { get; private set; }
     private bool soundPlayed = false;
     public float ServerCurrentTime { get; set; }
     public Entity ResourceEntity { get; set; }
@@ -16,8 +16,8 @@ public class Player
 
     public Player(int networkUniqueID, string name)
     {
-        id = SetPlayerID(networkUniqueID);
-        this.name = name;
+        ID = SetPlayerID(networkUniqueID);
+        Name = name;
     }
 
     int SetPlayerID(int networkUniqueID)
@@ -65,22 +65,13 @@ public class Player
         {
             stopwatch.Stop();
 
-            if (id == GameSystem.Player.GetID())
-                GameSystem.Game.Rpc("GameResult", Enemy.GetName());
+            if (ID == GameSystem.Player.ID)
+                GameSystem.Game.Rpc("GameResult", Enemy.Name);
         }
     }
 
     public void StopTimer() { stopwatch.Reset(); }
     public void StartTimer() { stopwatch.Start(); }
     public void ResetTimerSound() { soundPlayed = false; }
-
-    public string GetName() { return name; }
-    public int GetID() { return id; }
-    public int GetEnemyID()
-    {
-        if (id == 0)
-            return 1;
-        else
-            return 0;
-    }
+    public int GetEnemyID() { return (ID == 0) ? 1 : 0; }
 }

@@ -50,9 +50,9 @@ class RenderEntity : Godot.Sprite
     {
         if (Material != null && ownerComponent != null)
         {
-            var r = (ownerComponent.ownedBy == (User)GameSystem.Player.GetID()) ? Options.FriendlyColour.R : Options.EnemyColour.R;
-            var g = (ownerComponent.ownedBy == (User)GameSystem.Player.GetID()) ? Options.FriendlyColour.G : Options.EnemyColour.G;
-            var b = (ownerComponent.ownedBy == (User)GameSystem.Player.GetID()) ? Options.FriendlyColour.B : Options.EnemyColour.B;
+            var r = (ownerComponent.ownedBy == (User)GameSystem.Player.ID) ? Options.FriendlyColour.R : Options.EnemyColour.R;
+            var g = (ownerComponent.ownedBy == (User)GameSystem.Player.ID) ? Options.FriendlyColour.G : Options.EnemyColour.G;
+            var b = (ownerComponent.ownedBy == (User)GameSystem.Player.ID) ? Options.FriendlyColour.B : Options.EnemyColour.B;
 
             Material.Set("shader_param/red", r);
             Material.Set("shader_param/green", g);
@@ -93,7 +93,7 @@ class RenderEntity : Godot.Sprite
 
         var owner = ownerComponent.ownedBy;
 
-        var friendly = (User)GameSystem.Player.GetID();
+        var friendly = (User)GameSystem.Player.ID;
 
         Texture selected = selectedNeutralTexture;
         Color drawColour = Options.neutralColour;

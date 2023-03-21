@@ -16,7 +16,7 @@ public class InputHelper
 
     public InputHelper()
     {
-        playerID = GameSystem.Player.GetID();
+        playerID = GameSystem.Player.ID;
         _tileSize = GameSystem.Game.GetTileSize();
     }
 
@@ -150,7 +150,7 @@ public class InputHelper
                     {
                         GD.Print("Hi");
                         var rid = 0;
-                        if (GameSystem.Player.GetID() != (int)pp) rid = GameSystem.Player.ResourceEntity.ID;
+                        if (GameSystem.Player.ID != (int)pp) rid = GameSystem.Player.ResourceEntity.ID;
                         else rid = Enemy.ResourceEntity.ID;
                         action = new CreateAction(7, 7, 1, (int)pp, rid);
                     }
@@ -220,7 +220,7 @@ public class InputHelper
         else if(action is AICreateAction c)
         {
             var rid = 0;
-            if (GameSystem.Player.GetID() != (int)p) rid = GameSystem.Player.ResourceEntity.ID;
+            if (GameSystem.Player.ID != (int)p) rid = GameSystem.Player.ResourceEntity.ID;
             else rid = Enemy.ResourceEntity.ID;
             return new CreateAction(c.x, c.y, (int)c.unitType, (int)p, rid);
         }
@@ -278,7 +278,7 @@ public class InputHelper
             var tilePos = GameSystem.Input.GetTilePositionAtMouse();
 
             if (GameSystem.Map.IsPassable(tilePos.X, tilePos.Y) && GameSystem.Game.Turn.IsMyTurn())
-                return new CreateAction(tilePos.X, tilePos.Y, (int)unit, GameSystem.Player.GetID(), GameSystem.Player.ResourceEntity.ID);
+                return new CreateAction(tilePos.X, tilePos.Y, (int)unit, GameSystem.Player.ID, GameSystem.Player.ResourceEntity.ID);
 
             return null;
         }
