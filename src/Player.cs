@@ -22,7 +22,7 @@ public class Player
 
     int SetPlayerID(int networkUniqueID)
     {
-        if (GameSystem.Game.gameInfo.FirstPlayer)
+        if (GameSystem.Game.ContextManager.GameInfo.FirstPlayer)
         {
             if (networkUniqueID == 1)
                 return 0;
@@ -46,7 +46,7 @@ public class Player
 
     public void ProcessTimer()
     {
-        if (GameSystem.Turn.MovingPlayerOwnsEntity(TimerEntity) && !GameSystem.Game.gameOver)
+        if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(TimerEntity) && !GameSystem.Game.ContextManager.Context.GameOver)
         {
             Timer.currentTime = Timer.totalTime - (float)stopwatch.Elapsed.TotalMilliseconds;
             CheckTimeout();

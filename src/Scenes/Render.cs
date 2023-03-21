@@ -31,7 +31,7 @@ public class Render : Node2D, IObserver
 
 	Entity lastSelection;
 
-	int renderTurn = GameSystem.Turn.GetTurnCount();    
+	int renderTurn = GameSystem.Game.Turn.GetTurnCount();    
 
 	public enum HealthBarMode
 	{
@@ -97,12 +97,12 @@ public class Render : Node2D, IObserver
 
 	void UpdateRenderTurn()
 	{
-		if (GameSystem.Turn.GetTurnCount() == renderTurn)
+		if (GameSystem.Game.Turn.GetTurnCount() == renderTurn)
 			return;
 
-		renderTurn = GameSystem.Turn.GetTurnCount();
+		renderTurn = GameSystem.Game.Turn.GetTurnCount();
 
-		if (GameSystem.Turn.IsMyTurn())
+		if (GameSystem.Game.Turn.IsMyTurn())
 			GetMovementPreview(lastSelection);
 		else
 			ClearPreviews();
@@ -142,7 +142,7 @@ public class Render : Node2D, IObserver
 		if (GameSystem.Input.GetSelection() == lastSelection) return;
 
 		lastSelection = GameSystem.Input.GetSelection();
-		if (lastSelection == null || !GameSystem.Turn.IsMyTurn())
+		if (lastSelection == null || !GameSystem.Game.Turn.IsMyTurn())
 		{
 			ClearPreviews();
 			return;
@@ -271,7 +271,7 @@ public class Render : Node2D, IObserver
 
 		if (entity != null
 		 && ownedBy == (User)playerID
-		 && GameSystem.Turn.IsMyTurn())
+		 && GameSystem.Game.Turn.IsMyTurn())
 			return true;
 		else return false;
 	}
@@ -312,9 +312,12 @@ public class Render : Node2D, IObserver
  
 	void GetLastMove()
 	{
-		if (GameSystem.Turn.GetListSize() == 0) return;
+		//if (GameSystem.Turn.GetListSize() == 0) return;
 
-		var action = GameSystem.Turn.GetLastAction();
+		//var action = GameSystem.Turn.GetLastAction();
+		Action action = GameSystem.Game.Turn.GetUpdatedAction();
+		if (action == null) return;
+
 		if (action is CreateAction createAction)
 		{
 			Position position = GameSystem.EntityManager.GetComponent<Position>(createAction.CreatedEntity);

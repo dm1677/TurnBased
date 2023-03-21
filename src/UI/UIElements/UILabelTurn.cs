@@ -9,7 +9,7 @@ public class UILabelTurn : UILabel
 
     public override void Update()
     {
-        switch (GameSystem.Turn.GetTurnState())
+        switch (GameSystem.Game.Turn.GetTurnState())
         {
             case TurnState.WaitForInput:
                 Label.Text = "My Turn";

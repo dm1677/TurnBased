@@ -105,9 +105,9 @@ public class InputHelper
 
         if (acceptKeyboardInput)
         {
-            if (GameSystem.Game.isReplay)
+            if (GameSystem.Game.IsReplay)
                 ReplayInput(inputEvent);
-            else if (GameSystem.Turn.IsMyTurn())
+            else if (GameSystem.Game.Turn.IsMyTurn())
                 ProcessKeyboardInput(inputEvent);
         }
     }
@@ -124,7 +124,7 @@ public class InputHelper
             {
                 case ButtonList.Left:
 
-                    if (GameSystem.Game.ui.buildUnit.BuildingUnit && GameSystem.Turn.IsMyTurn() && !GameSystem.Game.isReplay)
+                    if (GameSystem.Game.ui.buildUnit.BuildingUnit && GameSystem.Game.Turn.IsMyTurn() && !GameSystem.Game.IsReplay)
                         action = CreateAction(GameSystem.Game.ui.buildUnit.UnitToBuild);
                     else
                         HandleSelection();
@@ -135,18 +135,18 @@ public class InputHelper
                     
                     if (GameSystem.Game.ui.buildUnit.BuildingUnit)
                         GameSystem.Game.ui.buildUnit.BuildingUnit = false;
-                    else if (GameSystem.Turn.IsMyTurn() && selection != null && !GameSystem.Game.isReplay)
+                    else if (GameSystem.Game.Turn.IsMyTurn() && selection != null && !GameSystem.Game.IsReplay)
                         action = MoveAction(selection);
                     break;
 
                 case ButtonList.Middle://AI stuff, delete later!!!!!                    
-                    var t = GameSystem.Turn.IsMyTurn();
+                    var t = GameSystem.Game.Turn.IsMyTurn();
                     User pp = User.Player;
                     if (!t) pp = User.Enemy;
                    
                     action = ConvertAction(ai.GetAction(GameSystem.Game.EncodeGameState(), pp), pp);
 
-                    if (GameSystem.Turn.GetTurnCount() == 1)
+                    if (GameSystem.Game.Turn.GetTurnCount() == 1)
                     {
                         GD.Print("Hi");
                         var rid = 0;
@@ -160,7 +160,7 @@ public class InputHelper
             }
             if (action != null)
             {
-                GameSystem.Turn.TakeTurn(action);
+                GameSystem.Game.Turn.TakeTurn(action);
                 GameSystem.Game.ui.buildUnit.BuildingUnit = false;
             }
         }
@@ -188,7 +188,7 @@ public class InputHelper
                 action = CreateAction(Unit.Knight);
 
             if (action != null)
-                GameSystem.Turn.TakeTurn(action);
+                GameSystem.Game.Turn.TakeTurn(action);
 
         }
     }
@@ -234,35 +234,11 @@ public class InputHelper
         if (inputEvent is InputEventKey keyboardEvent
         && keyboardEvent.IsPressed())
         {
-            Action action = null;
-
             if ((KeyList)keyboardEvent.Scancode == KeyList.Right)
-            {                
-                if (GameSystem.Turn.GetReplayCount() == GameSystem.Turn.GetListSize()) return;
-
-                var replayAction = GameSystem.Turn.GetReplayAction(GameSystem.Turn.GetTurnCount() - 1);
-                var actionData = (object)replayAction.ReturnData();
-                /*if (turn.IsMyTurn())
-                    action = replayAction;
-                else
-                    //game.Rpc("RemoteAction", actionData);
-                    action = replayAction;*/
-                action = replayAction;
-            }
+                GameSystem.Game.Turn.AdvanceReplay();
 
             if ((KeyList)keyboardEvent.Scancode == KeyList.Left)
-            {
-                if (GameSystem.Turn.GetListSize() > 0)
-                {
-                    var lastAction = GameSystem.Turn.GetLastAction();
-                    GameSystem.Turn.RemoveInvalidAction(lastAction);
-                    lastAction.Undo();
-
-                    GameSystem.HandlerManager.ReverseHandlers();
-                }
-            }
-
-            if (action != null) GameSystem.Turn.TakeTurn(action);
+                GameSystem.Game.Turn.ReverseReplay();
         }
     }
 
@@ -284,7 +260,7 @@ public class InputHelper
                     
                     if (clickedEntityPosition != null && clickedEntityPosition.X == mousePos.X && clickedEntityPosition.Y == mousePos.Y)
                     {
-                        if (GameSystem.Turn.MovingPlayerOwnsEntity(e) && entity!= e)
+                        if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(e) && entity!= e)
                             return new SwapAction(id, e.ID);
                     }
                 }
@@ -301,7 +277,7 @@ public class InputHelper
         {
             var tilePos = GameSystem.Input.GetTilePositionAtMouse();
 
-            if (GameSystem.Map.IsPassable(tilePos.X, tilePos.Y) && GameSystem.Turn.IsMyTurn())
+            if (GameSystem.Map.IsPassable(tilePos.X, tilePos.Y) && GameSystem.Game.Turn.IsMyTurn())
                 return new CreateAction(tilePos.X, tilePos.Y, (int)unit, GameSystem.Player.GetID(), GameSystem.Player.ResourceEntity.ID);
 
             return null;

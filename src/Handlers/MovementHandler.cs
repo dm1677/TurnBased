@@ -4,6 +4,12 @@ using static GameSystem;
 public class MovementHandler : IHandler
 {
     readonly HashSet<Movement> movementComponentList = new HashSet<Movement>();
+    readonly GameActionManager actionManager;
+
+    public MovementHandler(GameActionManager actionManager)
+    {
+        this.actionManager = actionManager;
+    }
 
     public bool Process()
     {
@@ -11,17 +17,17 @@ public class MovementHandler : IHandler
 
         CheckEnableKingMovement();
 
-        var action = GameSystem.Turn.GetLastAction();
+        var action = actionManager.GetLastAction();
         if (CheckMovementAction(action))
         {
-            if (CheckValidAction(action) || GameSystem.Game.isReplay)
+            if (CheckValidAction(action) || GameSystem.Game.IsReplay)
             {
-                GameSystem.Turn.ExecuteLastAction();
+                actionManager.ExecuteLastAction();
                 return true;
             }
             else
             {
-                GameSystem.Turn.RemoveInvalidAction(action);
+                actionManager.RemoveInvalidAction(action);
                 return false;
             }
         }
@@ -63,7 +69,7 @@ public class MovementHandler : IHandler
             Movement movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
 
 
-            if (GameSystem.Turn.CheckEntityOwnedByActivePlayer(entity))
+            if (GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(entity))
             {
                 var enemyUnit = CheckNearbyEnemies(entity, destination);
                 if (enemyUnit != null)
@@ -74,8 +80,8 @@ public class MovementHandler : IHandler
         }
         else if (action is AttackAction AttackAction)
         {
-            if (GameSystem.Game.isReplay) return true;
-            GameSystem.Turn.ReplaceLastAction(action);
+            if (GameSystem.Game.IsReplay) return true;
+            actionManager.ReplaceLastAction(action);
             return true;
         }
         else if (action is SwapAction swapAction)
@@ -93,7 +99,7 @@ public class MovementHandler : IHandler
             if (position == null || position2 == null || owner == null || owner2 == null) return false;
             if (swap == null && swap2 == null) return false;
             if (owner.ownedBy != owner2.ownedBy) return false;
-            if (!GameSystem.Turn.CheckEntityOwnedByActivePlayer(GameSystem.EntityManager.GetEntity(swapAction.SwappingEntity))) return false;
+            if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(GameSystem.EntityManager.GetEntity(swapAction.SwappingEntity))) return false;
             return true;
         }
 

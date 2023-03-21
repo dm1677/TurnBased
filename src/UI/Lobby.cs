@@ -107,7 +107,7 @@ public class Lobby : Control
 
 		bool firstPlayer = (random.Next(2) == 1);
 
-		return new GameInfo(false, null, (int)timerTime.Value, (int)timerIncrement.Value, timerType, firstPlayer, kingCount.Selected);
+		return new GameInfo(GameType.Live, null, (int)timerTime.Value, (int)timerIncrement.Value, timerType, firstPlayer, kingCount.Selected);
 	}
 
 	void OnConnectionSuccess()
@@ -190,7 +190,7 @@ public class Lobby : Control
 
 	private void _on_ReplayFile_file_selected(String path)
 	{
-		var gameInfo = new GameInfo(true, path, 30, 0, 0, true, 2).Serialise();
+		var gameInfo = new GameInfo(GameType.Replay, path, 30, 0, 0, true, 2).Serialise();
 
 		EmitSignal(nameof(Replay), (object)gameInfo);
 	}

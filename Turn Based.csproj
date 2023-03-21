@@ -67,6 +67,9 @@
     <Compile Include="src\Components\Swap.cs" />
     <Compile Include="src\Coords.cs" />
     <Compile Include="src\Enums.cs" />
+    <Compile Include="src\GameActionManager.cs" />
+    <Compile Include="src\GameContext.cs" />
+    <Compile Include="src\GameContextManager.cs" />
     <Compile Include="src\GameInfo.cs" />
     <Compile Include="src\NATTraversal.cs" />
     <Compile Include="src\Options.cs" />

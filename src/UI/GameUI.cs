@@ -58,7 +58,7 @@ public class GameUI : Control
 
 	public void Initialise()
 	{
-		if (GameSystem.Game.isReplay)
+		if (GameSystem.Game.IsReplay)
 		{
             replayPanel.Show();
             rematchButton.Disabled = true;
@@ -107,7 +107,7 @@ public class GameUI : Control
 
 	void UpdateLabels()
 	{
-        turnLabel.Text = "Turn: " + GameSystem.Turn.GetTurnCount();
+        turnLabel.Text = "Turn: " + GameSystem.Game.Turn.GetTurnCount();
 
 		var timeSpan = System.TimeSpan.FromMilliseconds(Enemy.Timer.currentTime);
 		timer1.Text = timeSpan.ToString("mm':'ss");
@@ -161,7 +161,7 @@ public class GameUI : Control
 	public void ChatMessage(string message)
 	{
 		//chat.AddMessage(message);
-        if(!GameSystem.Game.gameInfo.Singleplayer)
+        if(!GameSystem.Game.IsSingleplayer)
             chat.Rpc("AddMessage", message);
 	}
 

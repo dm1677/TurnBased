@@ -6,14 +6,21 @@ public class ResourceHandler : IHandler
     const int _resourcesPerTurn = 1;
 
     readonly HashSet<GResource> resourceList = new HashSet<GResource>();
-    
+    readonly GameActionManager actionManager;
+
+    public ResourceHandler(GameActionManager actionManager)
+    {
+        this.actionManager = actionManager;
+    }
+
     public bool Process()
     {
         if (resourceList.Count == 0) UpdateComponentList();
 
-        if (!UpdateResources())
+        Action action = actionManager.GetLastAction();
+        if (!UpdateResources(action))
         {
-            GameSystem.Turn.RemoveInvalidAction(GameSystem.Turn.GetLastAction());
+            actionManager.RemoveInvalidAction(actionManager.GetLastAction());
             return false;
         }
 
@@ -37,16 +44,15 @@ public class ResourceHandler : IHandler
         }
     }
 
-    bool UpdateResources()
+    bool UpdateResources(Action action)
     {
-        var action = GameSystem.Turn.GetLastAction();
         if (action is CreateAction createAction)
         {
             if (!GameSystem.Map.IsPassable(createAction.X, createAction.Y)) return false;
 
             foreach (GResource resource in resourceList)
             {
-                var activePlayerOwnsResource = GameSystem.Turn.CheckEntityOwnedByActivePlayer(resource.Parent);
+                var activePlayerOwnsResource = GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(resource.Parent);
                 if (activePlayerOwnsResource)
                 {
                     var unitType = (Unit)createAction.UnitType;
@@ -64,14 +70,14 @@ public class ResourceHandler : IHandler
     void AddTurnResources()
     {
         foreach (GResource resource in resourceList)
-            if (!GameSystem.Turn.CheckEntityOwnedByActivePlayer(resource.Parent))
+            if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(resource.Parent))
                 resource.Value += _resourcesPerTurn;
     }
 
     void ReverseTurnResources()
     {
         foreach (GResource resource in resourceList)
-            if (GameSystem.Turn.CheckEntityOwnedByActivePlayer(resource.Parent))
+            if (GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(resource.Parent))
                 resource.Value -= _resourcesPerTurn;
     }
 

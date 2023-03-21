@@ -4,11 +4,11 @@ public class HandlerManager
 {
     private readonly List<IHandler> handlerList = new List<IHandler>();
 
-    public HandlerManager()
+    public HandlerManager(GameActionManager actionManager)
     {
-        handlerList.Add(new MovementHandler());
+        handlerList.Add(new MovementHandler(actionManager));
         handlerList.Add(new HealthHandler());
-        handlerList.Add(new ResourceHandler());
+        handlerList.Add(new ResourceHandler(actionManager));
         handlerList.Add(new EntityHandler());
         handlerList.Add(new TimerHandler());
     }
@@ -31,13 +31,13 @@ public class HandlerManager
         reversedList.AddRange(handlerList);
         reversedList.Reverse();
 
-        GameSystem.Turn.AdvanceTurnState();
+        GameSystem.Game.Turn.AdvanceTurnState();
 
         foreach (IHandler handler in reversedList)
             handler.Reverse();
 
-        GameSystem.Turn.AdvanceTurnState();
-        GameSystem.Turn.DecrementTurnCount();
+        GameSystem.Game.Turn.AdvanceTurnState();
+        GameSystem.Game.Turn.DecrementTurnCount();
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         
         System.GC.Collect();

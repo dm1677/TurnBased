@@ -13,7 +13,7 @@ public class TimerHandler : IHandler
 
     public bool Process()
     {
-        if (!GameSystem.Game.isReplay && !GameSystem.Game.gameInfo.Singleplayer)
+        if (!GameSystem.Game.IsReplay && !GameSystem.Game.IsSingleplayer)
         {
             ProcessTimers();
             SetRemoteTimer();
@@ -28,7 +28,7 @@ public class TimerHandler : IHandler
     {
         foreach (Player p in players)
         {
-            if (GameSystem.Turn.CheckEntityOwnedByActivePlayer(p.TimerEntity))
+            if (GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(p.TimerEntity))
             {
                 p.StopTimer();
                 ProcessTimer(p);
@@ -62,7 +62,7 @@ public class TimerHandler : IHandler
 
     void IncrementTimer(Timer timer)
     {
-        if(GameSystem.Turn.GetTurnCount() > 3)
+        if(GameSystem.Game.Turn.GetTurnCount() > 3)
             timer.currentTime += timer.increment;
         timer.totalTime = timer.currentTime;
     }

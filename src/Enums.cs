@@ -43,3 +43,9 @@ public enum TurnState
     ProcessMyTurn,
     ProcessEnemyTurn
 }
+
+public enum GameType
+{
+    Replay,
+    Live
+}

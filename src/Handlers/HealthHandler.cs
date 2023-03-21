@@ -67,7 +67,7 @@ public class HealthHandler : IHandler
 
     void ProcessRegeneration(Health health)
     {
-        if (GameSystem.Turn.CheckEntityOwnedByActivePlayer(health.Parent))
+        if (GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(health.Parent))
         {
             if (health.CurrentHP > 0 && health.CurrentHP < health.MaxHP)
             {
@@ -79,7 +79,7 @@ public class HealthHandler : IHandler
 
     void ReverseRegeneration(Health health)
     {
-        if (!GameSystem.Turn.CheckEntityOwnedByActivePlayer(health.Parent))
+        if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(health.Parent))
         {
             if (health.TurnsSinceRegeneration == 0)
                 health.CurrentHP -= health.Regeneration;

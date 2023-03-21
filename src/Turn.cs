@@ -5,16 +5,19 @@ using Godot;
 public class Turn
 {
 	TurnState turnState;
-
-	private readonly List<Action> actionList = new List<Action>();
-    private readonly List<Action> replayList = new List<Action>();
-
+	readonly GameActionManager actionManager;
+	readonly GameContextManager contextManager;
+	readonly HandlerManager handlerManager;
     private int turnCount = 1;
 
-	//Always define whether or not it's the player's turn when instantiating
-	public Turn()
+	public Turn(GameActionManager gameActionManager, GameContextManager contextManager, HandlerManager handlerManager)
 	{
+		this.contextManager = contextManager;
+		this.handlerManager = handlerManager;
 		SetTurnState((TurnState)GameSystem.Player.GetID());
+		actionManager = gameActionManager;
+		if (contextManager.IsReplay)
+			actionManager.LoadReplay(contextManager.GameInfo.ReplayPath);
 	}
 
 	public void AdvanceTurnState()
@@ -79,12 +82,6 @@ public class Turn
         turnCount--;
     }
 
-
-	public void AddActionToList(Action action)
-	{
-		actionList.Add(action);
-	}
-
 	void SetTurnState(TurnState state)
 	{
 		turnState = state;
@@ -96,66 +93,60 @@ public class Turn
 		else return false;
 	}
 
-
 	public TurnState GetTurnState()
 	{
 		return turnState;
 	}
 
+	//Is the the best way of doing this?
 	public void ExecuteLastAction()
 	{
-        if (actionList.Count > 0)
-        {
-            GetLastAction().Execute();
-            turnCount++;
-        }
+		actionManager.ExecuteLastAction();
+		turnCount++;
 	}
 
 	public bool CheckTurnCount()
 	{
-		if (turnCount == actionList.Count) return true;
+		if (turnCount == actionManager.GetActionCount()) return true;
 		return false;
 	}
 
-
-	public Action GetLastAction()
+	public void SetReplay()
 	{
-        if (actionList.Count > 0)
-		{
-			return actionList[actionList.Count - 1];
-		}
-		else throw new Exception("There are no actions in the list.");
+		actionManager.SaveReplay();
+		actionManager.SetReplay(); //better way to do this?
 	}
 
-	public void ExecuteAction()
-	{
-		if (actionList.Count > 0)
-		{
-			actionList[turnCount - 1].Execute();
-			IncrementTurnCount();
-		}
-		else
-			throw new Exception("There are no actions in the list.");
-	}
+	//Keeping just in case something breaks
+	//public void ExecuteAction()
+	//{
+	//	if (actionList.Count > 0)
+	//	{
+	//		actionList[turnCount - 1].Execute();
+	//		IncrementTurnCount();
+	//	}
+	//	else
+	//		throw new Exception("There are no actions in the list.");
+	//}
 
-	public int GetListSize()
+	public Action GetUpdatedAction()
 	{
-		return actionList.Count;
+		return actionManager.GetUpdatedAction(); //Is there a better way of doing this?
 	}
 
 	public void TakeTurn(Action action)
 	{
-		AddActionToList(action);
+		actionManager.AddActionToList(action);
 		AdvanceTurnState();
 	}
 
 	public bool ProcessTurn()
 	{
-		if (actionList.Count < 1) return false;
-		if (GameSystem.HandlerManager.ProcessHandlers())
+		if (actionManager.GetActionCount() < 1) return false;
+		if (handlerManager.ProcessHandlers())
 		{
 			AdvanceTurnState();
-            if (!GameSystem.Game.isReplay)GameSystem.Sound.PlaySound(Sound.Effect.Turn);
+            if (!contextManager.IsReplay) GameSystem.Sound.PlaySound(Sound.Effect.Turn);
             return true;
 		}
 		else
@@ -163,17 +154,6 @@ public class Turn
 			ReverseTurnState();
 			return false;
 		}
-	}
-
-	public void RemoveInvalidAction(Action action)
-	{
-		actionList.Remove(action);
-	}
-
-	public void ReplaceLastAction(Action action)
-	{
-		actionList.RemoveAt(actionList.Count - 1);
-		actionList.Add(action);
 	}
 
 	public bool CheckEntityOwnedByActivePlayer(Entity entity)
@@ -212,9 +192,9 @@ public class Turn
 
 				if (!ProcessTurn()) break;
 
-                var actionData = GetLastAction().ReturnData();
-				if (!GameSystem.Game.isReplay && !GameSystem.Game.gameInfo.Singleplayer)
-                    GameSystem.Game.Rpc("RemoteAction", (object)actionData);
+                var actionData = actionManager.GetLastAction().ReturnData();
+				if (!contextManager.IsReplay && !contextManager.GameInfo.Singleplayer)
+					GameSystem.Game.Rpc("RemoteAction", (object)actionData);
 
                 break;
             case TurnState.ProcessEnemyTurn:
@@ -225,83 +205,25 @@ public class Turn
 		}
 	}
 
-    public void SerialiseList()
-    {
-        string dir = AppDomain.CurrentDomain.BaseDirectory;
-        string replayDir = @"\Replays\LastReplay.tbr";
-        string path = dir + replayDir;
 
-        System.IO.Directory.CreateDirectory(dir + @"\Replays");
-        
-        try
-        {
-            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(path))
-            {
-                foreach (Action action in actionList)
-                {
-                    var data = action.ReturnData();
-                    sw.WriteLine(";");
-                    foreach (string s in data)
-                        sw.WriteLine(s);
-                }
-                sw.WriteLine(";");
-            }
-        }
-        catch(Exception e)
-        {
-            GD.Print("SerialiseList exception: " + e);
-        }
-    }
-
-    public void DeserialiseList(string path)
-    {
-        var lines = System.IO.File.ReadLines(path);
-        var actionData = new List<string>();
-        
-        foreach (string line in lines)
-        {
-            if (line == ";")
-            {
-				if (actionData.Count > 0)
-				{
-					var action = DeserialiseAction(actionData.ToArray());
-					replayList.Add(action);
-
-					actionData.Clear();
-				}
-            }
-            else actionData.Add(line);
-            
-        }
-    }
-
-    Action DeserialiseAction(string[] data)
-    {
-        var type = Type.GetType(data[0]);
-        object[] parameters = new object[data.Length - 1];
-
-        for (int i = 1; i < data.Length; i++)
-            parameters[i - 1] = int.Parse(data[i]);
-
-        var action = Activator.CreateInstance(type, parameters);
-
-        return (Action)action;
-    }
-
-    public void SetReplay()
-    {
-        replayList.AddRange(actionList);
-        GameSystem.Game.isReplay = true;
-    }
-
-	public Action GetReplayAction(int index)
+	//Should these two methods exist here?
+	public void AdvanceReplay()
 	{
-		return replayList[index];
-	}
+        if (actionManager.GetReplayCount() == actionManager.GetActionCount()) return;
 
-	public int GetReplayCount()
+        var replayAction = actionManager.GetReplayAction(GetTurnCount() - 1);
+		TakeTurn(replayAction);
+    }
+
+	public void ReverseReplay()
 	{
-		return replayList.Count;
-	}
+        if (actionManager.GetActionCount() > 0)
+        {
+            var lastAction = actionManager.GetLastAction();
+            actionManager.RemoveInvalidAction(lastAction);
+            lastAction.Undo();
 
+            handlerManager.ReverseHandlers();
+        }
+    }
 }

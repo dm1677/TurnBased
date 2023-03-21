@@ -4,7 +4,7 @@ public class EntityHandler : IHandler
 {
     public bool Process()
     {
-        if (GameSystem.Turn.CheckTurnCount()) GameSystem.Turn.ExecuteLastAction();
+        if (GameSystem.Game.Turn.CheckTurnCount()) GameSystem.Game.Turn.ExecuteLastAction();
         ProcessEntityDeletion();
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         return true;
