@@ -14,15 +14,15 @@ public class Player
 
     readonly Stopwatch stopwatch = new Stopwatch();
 
-    public Player(int networkUniqueID, string name)
+    public Player(int networkUniqueID, string name, bool isFirstPlayer)
     {
-        id = SetPlayerID(networkUniqueID);
+        id = SetPlayerID(networkUniqueID, isFirstPlayer);
         this.name = name;
     }
 
-    int SetPlayerID(int networkUniqueID)
+    int SetPlayerID(int networkUniqueID, bool isFirstPlayer)
     {
-        if (GameSystem.Game.ContextManager.GameInfo.FirstPlayer)
+        if (isFirstPlayer)
         {
             if (networkUniqueID == 1)
                 return 0;
@@ -65,8 +65,8 @@ public class Player
         {
             stopwatch.Stop();
 
-            if (id == GameSystem.Player.GetID())
-                GameSystem.Game.Rpc("GameResult", Enemy.GetName());
+            if (id == GameSystem.Game.Player.GetID())
+                GameSystem.Game.Rpc("GameResult", GameSystem.Game.Enemy.GetName());
         }
     }
 

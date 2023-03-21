@@ -27,7 +27,7 @@ public class GameUI : Control
 	{
 		ShowBehindParent = true;
 		chat = (ChatBox)Game.InstantiateChildNode(chatBoxScene, GetNode("Panel"));
-        chat.Initialise(GameSystem.Player.GetName(), 6, 370, 282, 113);
+		chat.Initialise(GameSystem.Player.GetName(), 6, 370, 282, 113);
 
 		optionsMenu = (OptionsMenu)GetNode("OptionsMenu");
 
@@ -38,7 +38,7 @@ public class GameUI : Control
 
 		rematchButton = (Button)GetNode("Panel/RematchButton");
 
-        chat.Connect("ChatSignal", GameSystem.Game, "ChatInput");
+		chat.Connect("ChatSignal", GameSystem.Game, "ChatInput");
 
 		replayPanel = (Control)GetNode("Panel/ReplayNode");
 		turnLabel = (Label)GetNode("Panel/ReplayNode/TurnCount");
@@ -60,9 +60,9 @@ public class GameUI : Control
 	{
 		if (GameSystem.Game.IsReplay)
 		{
-            replayPanel.Show();
-            rematchButton.Disabled = true;
-            rematchButton.Hide();
+			replayPanel.Show();
+			rematchButton.Disabled = true;
+			rematchButton.Hide();
 
 			var a = (Control)GetNode("Panel/TimerInfo");
 			a.Hide();   
@@ -86,7 +86,7 @@ public class GameUI : Control
 	{
 		timer1Name.Text = Enemy.GetName() + ":";
 		timer1Name.AddColorOverride("font_color", Options.EnemyColour);
-        timer2Name.Text = GameSystem.Player.GetName() + ":";
+		timer2Name.Text = GameSystem.Player.GetName() + ":";
 		timer2Name.AddColorOverride("font_color", Options.FriendlyColour);
 	}
 
@@ -107,7 +107,7 @@ public class GameUI : Control
 
 	void UpdateLabels()
 	{
-        turnLabel.Text = "Turn: " + GameSystem.Game.Turn.GetTurnCount();
+		turnLabel.Text = "Turn: " + GameSystem.Game.Turn.GetTurnCount();
 
 		var timeSpan = System.TimeSpan.FromMilliseconds(Enemy.Timer.currentTime);
 		timer1.Text = timeSpan.ToString("mm':'ss");
@@ -136,7 +136,7 @@ public class GameUI : Control
 	private void _on_SurrenderButton_pressed()
 	{
 		if (surrendered)
-            GameSystem.Game.EndGame();
+			GameSystem.Game.EndGame();
 		else
 			surrenderConfirmation.PopupCentered();
 	}
@@ -145,8 +145,8 @@ public class GameUI : Control
 	{
 		DisableSurrender();
 
-        ChatMessage(GameSystem.Player.GetName() + " surrendered!");
-        GameSystem.Game.Rpc("GameResult", Enemy.GetName());
+		ChatMessage(GameSystem.Game.Player.GetName() + " surrendered!");
+		GameSystem.Game.Rpc("GameResult", GameSystem.Game.Enemy.GetName());
 	}
 
 	public void DisableSurrender()
@@ -161,8 +161,8 @@ public class GameUI : Control
 	public void ChatMessage(string message)
 	{
 		//chat.AddMessage(message);
-        if(!GameSystem.Game.IsSingleplayer)
-            chat.Rpc("AddMessage", message);
+		if(!GameSystem.Game.IsSingleplayer)
+			chat.Rpc("AddMessage", message);
 	}
 
 	public void LocalChatMessage(string message)
@@ -176,7 +176,7 @@ public class GameUI : Control
 		Sprite sprite = new Sprite();
 		if(action is MoveAction moveAction)
 		{
-            /*Name nameComponent = (Name)entityManager.GetComponent(moveAction._entityID, "Name");
+			/*Name nameComponent = (Name)entityManager.GetComponent(moveAction._entityID, "Name");
 			string name = nameComponent.name;
 
 			Owner ownerComponent = (Owner)entityManager.GetComponent(moveAction._entityID, "Owner");
@@ -185,7 +185,7 @@ public class GameUI : Control
 			string playerName = (owner == User.Player) ? player.GetName() : enemy.GetName();
 
 			message = $"{playerName}'s {name} moved to {moveAction._destinationX}, {moveAction._destinationY}";*/
-            Sprite unitSprite = GameSystem.EntityManager.GetComponent<Sprite>(moveAction.EntityID);
+			Sprite unitSprite = GameSystem.EntityManager.GetComponent<Sprite>(moveAction.EntityID);
 			chat.LogMove(unitSprite);
 		}
 		if (action is AttackAction attackAction)
@@ -208,20 +208,20 @@ public class GameUI : Control
 			//message = $"{playerName}'s {attackerName} attacked {playerName}'s {defenderName}";
 			if(!attackAction.Killed)
 			{
-                Sprite attackerSprite = GameSystem.EntityManager.GetComponent<Sprite>(attackAction.AttackerID);
-                Sprite defenderSprite = GameSystem.EntityManager.GetComponent<Sprite>(attackAction.DefenderID);
+				Sprite attackerSprite = GameSystem.EntityManager.GetComponent<Sprite>(attackAction.AttackerID);
+				Sprite defenderSprite = GameSystem.EntityManager.GetComponent<Sprite>(attackAction.DefenderID);
 				chat.LogAttack(attackerSprite, defenderSprite);
 			}
 			else
 			{
-                Sprite attackerSprite = GameSystem.EntityManager.TryGetComponent<Sprite>(attackAction.AttackerID);
-                Sprite defenderSprite = GameSystem.EntityManager.TryGetComponent<Sprite>(attackAction.DefenderID);
+				Sprite attackerSprite = GameSystem.EntityManager.TryGetComponent<Sprite>(attackAction.AttackerID);
+				Sprite defenderSprite = GameSystem.EntityManager.TryGetComponent<Sprite>(attackAction.DefenderID);
 				chat.LogAttack(attackerSprite, defenderSprite, true);
 			}
 		}
 		if (action is CreateAction createAction)
 		{
-            /*Name nameComponent = (Name)entityManager.GetComponent(createAction._createdEntity, "Name");
+			/*Name nameComponent = (Name)entityManager.GetComponent(createAction._createdEntity, "Name");
 			string name = nameComponent.name;
 
 			Owner ownerComponent = (Owner)entityManager.GetComponent(createAction._createdEntity, "Owner");
@@ -230,14 +230,14 @@ public class GameUI : Control
 			string playerName = (owner == User.Player) ? player.GetName() : enemy.GetName();
 			sprite = (Sprite)entityManager.GetComponent(createAction._createdEntity, "Sprite");
 			message = $"{playerName} created {name} at {createAction.x}, {createAction.y}";*/
-            Sprite unitSprite = GameSystem.EntityManager.GetComponent<Sprite>(createAction.CreatedEntity);
+			Sprite unitSprite = GameSystem.EntityManager.GetComponent<Sprite>(createAction.CreatedEntity);
 			chat.LogCreate(unitSprite);
 
 		}
 		if (action is SwapAction swapAction)
 		{
-            Sprite firstUnitSprite = GameSystem.EntityManager.GetComponent<Sprite>(swapAction.SwappingEntity);
-            Sprite secondUnitSprite = GameSystem.EntityManager.GetComponent<Sprite>(swapAction.SwappedEntity);
+			Sprite firstUnitSprite = GameSystem.EntityManager.GetComponent<Sprite>(swapAction.SwappingEntity);
+			Sprite secondUnitSprite = GameSystem.EntityManager.GetComponent<Sprite>(swapAction.SwappedEntity);
 
 			chat.LogSwap(firstUnitSprite, secondUnitSprite);
 		}
@@ -247,13 +247,13 @@ public class GameUI : Control
 
 	private void _on_RematchButton_pressed()
 	{
-        GameSystem.Game.Rematch();
+		GameSystem.Game.Rematch();
 		rematchButton.Disabled = true;
 	}
 
 	private void _on_Button_pressed()
 	{
-        GameSystem.Sound.Mute();
+		GameSystem.Sound.Mute();
 	}
 
 	private void _on_ReplayForward_pressed()
@@ -262,7 +262,7 @@ public class GameUI : Control
 		inputEvent.Pressed = true;
 		inputEvent.Scancode = (int)KeyList.Right;
 
-        GameSystem.Input.ReplayInput(inputEvent);
+		GameSystem.Input.ReplayInput(inputEvent);
 	}
 
 
@@ -272,7 +272,7 @@ public class GameUI : Control
 		inputEvent.Pressed = true;
 		inputEvent.Scancode = (int)KeyList.Left;
 
-        GameSystem.Input.ReplayInput(inputEvent);
+		GameSystem.Input.ReplayInput(inputEvent);
 	}
 
 	private void _on_Options_pressed()

@@ -7,8 +7,8 @@ public class TimerHandler : IHandler
 
     public TimerHandler()
     {
-        players.Add(GameSystem.Player);
-        players.Add(Enemy);
+        players.Add(GameSystem.Game.Player);
+        players.Add(GameSystem.Game.Enemy);
     }
 
     public bool Process()
@@ -69,15 +69,15 @@ public class TimerHandler : IHandler
 
     void SetRemoteTimer()
     {
-        var timerData = new Godot.Collections.Array { GameSystem.Player.Timer.currentTime - GameSystem.Game.Sync.GetDelay() };
+        var timerData = new Godot.Collections.Array { GameSystem.Game.Player.Timer.currentTime - GameSystem.Game.Sync.GetDelay() };
         GameSystem.Game.Rpc("ValidateTimer", timerData);
         GameSystem.Game.Sync.TestDelay();
     }
 
     void UpdateTimerFromRemoteData()
     {
-        Enemy.Timer.currentTime = Enemy.ServerCurrentTime;
-        Enemy.Timer.totalTime = Enemy.ServerCurrentTime;
-        Enemy.Timer.startingTime = Enemy.ServerCurrentTime;
+        GameSystem.Game.Enemy.Timer.currentTime = GameSystem.Game.Enemy.ServerCurrentTime;
+        GameSystem.Game.Enemy.Timer.totalTime = GameSystem.Game.Enemy.ServerCurrentTime;
+        GameSystem.Game.Enemy.Timer.startingTime = GameSystem.Game.Enemy.ServerCurrentTime;
     }
 }

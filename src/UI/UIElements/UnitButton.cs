@@ -29,7 +29,7 @@ public class UnitButton : Button
             unitTypeInitialised = true;
         }
 
-        Disabled = (GameSystem.Player.Resource.Value < UnitType.Cost) ? true : false;
+        Disabled = (GameSystem.Game.Player.Resource.Value < UnitType.Cost) ? true : false;
 
         Update();
     }
