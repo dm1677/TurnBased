@@ -8,12 +8,12 @@ public class PlayerManager
 
     public PlayerManager(GameContextManager contextManager, ICollection<PlayerInfo> playerInfo)
     {
-        CreatePlayers(playerInfo);
+        CreatePlayers(contextManager, playerInfo);
         CreateTimer(contextManager, LocalPlayer);
         CreateTimer(contextManager, RemotePlayer);
     }
 
-    void CreatePlayers(ICollection<PlayerInfo> playerInfo)
+    void CreatePlayers(GameContextManager contextManager, ICollection<PlayerInfo> playerInfo)
     {
         var listSize = playerInfo.Count;
         if (listSize > 1)
@@ -21,22 +21,22 @@ public class PlayerManager
             PlayerInfo[] array = new PlayerInfo[listSize];
             playerInfo.CopyTo(array, 0);
 
-            LocalPlayer = CreatePlayer(array[0]);
-            RemotePlayer = CreatePlayer(array[1]);
+            LocalPlayer = CreatePlayer(contextManager, array[0]);
+            RemotePlayer = CreatePlayer(contextManager, array[1]);
         }
         else
         {
-            LocalPlayer = CreatePlayer(new PlayerInfo("Player One", 1));
-            RemotePlayer = CreatePlayer(new PlayerInfo("Player Two", 2));
+            LocalPlayer = CreatePlayer(contextManager, new PlayerInfo("Player One", 1));
+            RemotePlayer = CreatePlayer(contextManager, new PlayerInfo("Player Two", 2));
         }
     }
 
-    Player CreatePlayer(PlayerInfo playerInfo)
+    Player CreatePlayer(GameContextManager contextManager, PlayerInfo playerInfo)
     {
         var name = playerInfo.Name;
         var id = playerInfo.ID;
 
-        return new Player(id, name);
+        return new Player(id, name, contextManager.GameInfo.FirstPlayer);
     }
 
     void CreateTimer(GameContextManager contextManager, Player player)

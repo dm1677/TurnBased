@@ -14,15 +14,15 @@ public class Player
 
     readonly Stopwatch stopwatch = new Stopwatch();
 
-    public Player(int networkUniqueID, string name)
+    public Player(int networkUniqueID, string name, bool isFirstPlayer)
     {
-        ID = SetPlayerID(networkUniqueID);
+        ID = SetPlayerID(networkUniqueID, isFirstPlayer);
         Name = name;
     }
 
-    int SetPlayerID(int networkUniqueID)
+    int SetPlayerID(int networkUniqueID, bool isFirstPlayer)
     {
-        if (GameSystem.Game.ContextManager.GameInfo.FirstPlayer)
+        if (isFirstPlayer)
         {
             if (networkUniqueID == 1)
                 return 0;
