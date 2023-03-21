@@ -74,6 +74,7 @@
     <Compile Include="src\NATTraversal.cs" />
     <Compile Include="src\Options.cs" />
     <Compile Include="src\PlayerInfo.cs" />
+    <Compile Include="src\PlayerManager.cs" />
     <Compile Include="src\UI\ColourButton.cs" />
     <Compile Include="src\UI\ColourMenu.cs" />
     <Compile Include="src\Scenes\HealthNode.cs" />

@@ -71,9 +71,6 @@ public class Game : Node2D
 
         CreateResources();
         CreateKings();
-
-        if (!IsReplay)
-            CreateTimers();
     }
 
     //get rid of the string matching!
@@ -135,21 +132,6 @@ public class Game : Node2D
         }
 
         return state;
-    }
-
-    void CreateTimers()
-    {
-        var timerEntity = ComponentFactory.Instance().CreateTimer(ContextManager.GameInfo.TimerType, 
-                                                                  ContextManager.GameInfo.Time,
-                                                                  ContextManager.GameInfo.Increment,
-                                                                  GameSystem.Player.                                                                  ID);
-        GameSystem.Player.SetTimer(timerEntity);
-
-        timerEntity = Enemy.TimerEntity = ComponentFactory.Instance().CreateTimer(ContextManager.GameInfo.TimerType,
-                                                                                  ContextManager.GameInfo.Time,
-                                                                                  ContextManager.GameInfo.Increment,
-                                                                                  Enemy.                                                                                  ID);
-        Enemy.SetTimer(timerEntity);
     }
 
     void CreateResources()

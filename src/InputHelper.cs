@@ -6,7 +6,7 @@ public class InputHelper
 {
     Entity selection;
 
-    readonly int _tileSize, playerID;
+    readonly int _tileSize;
 
     bool acceptKeyboardInput = true;
     bool acceptMouseInput = true;
@@ -16,7 +16,6 @@ public class InputHelper
 
     public InputHelper()
     {
-        playerID = GameSystem.Player.ID;
         _tileSize = GameSystem.Game.GetTileSize();
     }
 
