@@ -223,6 +223,7 @@ public class Turn
             actionManager.RemoveInvalidAction(lastAction);
             lastAction.Undo();
 
+            AdvanceTurnState();
             handlerManager.ReverseHandlers();
 			AdvanceTurnState();
 			DecrementTurnCount();
