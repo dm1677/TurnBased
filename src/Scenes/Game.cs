@@ -11,8 +11,7 @@ public class Game : Node2D
 
     //Godot: Parent nodes with networking information
     GameSetup gameSetup;
-    Lobby lobby;
-    public GameUI ui { get; private set; }
+    public GameUI UI { get; private set; }
     Render render;
 
     AIManager ai = new AIManager();
@@ -29,7 +28,7 @@ public class Game : Node2D
     
     public bool timerDataReceived = false;
 
-    private Component[] kingMovementComponents = new Component[4];
+    private readonly Component[] kingMovementComponents = new Component[4];
 
     public void Initialise(GameInfo gameInfo, HashSet<PlayerInfo> playerInfoList)
     {
@@ -41,9 +40,9 @@ public class Game : Node2D
         Instantiate();
 
         if (gameInfo.GameType == GameType.Replay)
-            ui.DisableSurrender();
-        ui.Initialise();
-        ui.ChatMessage(GameSystem.Player.GetName() + " joined the game!");
+            UI.DisableSurrender();
+        UI.Initialise();
+        UI.ChatMessage(GameSystem.Player.GetName() + " joined the game!");
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
     }
 
@@ -57,7 +56,7 @@ public class Game : Node2D
         CreateStartingEntities();
 
         render = (Render)InstantiateChildNode(GD.Load("res://src/Scenes/Render.tscn"));
-        ui = (GameUI)InstantiateChildNode(GD.Load("res://src/UI/GameUI.tscn"));
+        UI = (GameUI)InstantiateChildNode(GD.Load("res://src/UI/GameUI.tscn"));
     }
 
     //Temporary
@@ -74,46 +73,15 @@ public class Game : Node2D
         gameState.AddUnit(new UnitState(Unit.Tree, User.Neutral, 0, 7, 13));
         gameState.AddUnit(new UnitState(Unit.Tree, User.Neutral, 0, 7, 1));
 
-        /*gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Player, 3, 3, 3));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Player, 3, 3, 2));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Player, 3, 3, 11));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Player, 3, 3, 12));
-
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Prawn, global::Owner.Player.Player, 0, 4, 5));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Prawn, global::Owner.Player.Player, 0, 4, 9));
-
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Knight, global::Owner.Player.Player, 0, 2, 7));
-
-
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Enemy, 3, 11, 3));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Enemy, 3, 11, 2));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Enemy, 3, 11, 11));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Gobbo, global::Owner.Player.Enemy, 3, 11, 12));
-
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Prawn, global::Owner.Player.Enemy, 0, 10, 5));
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Prawn, global::Owner.Player.Enemy, 0, 10, 9));
-
-		gameState.AddUnit(new UnitState(ComponentFactory.Unit.Knight, global::Owner.Player.Enemy, 0, 12, 7));*/
-
 
         foreach (UnitState u in gameState.units)
-        {
-            var entity = ComponentFactory.Instance().CreateUnit(u.X, u.Y, u.UnitType);
-            GameSystem.EntityManager.AddComponent(entity, new Owner() { ownedBy = u.Owner });
-        }
+            ComponentFactory.Instance().CreateUnit(u.X, u.Y, u.UnitType, u.Owner);
 
-        //CreateTrees();
         CreateResources();
         CreateKings();
 
         if (!IsReplay)
             CreateTimers();
-
-        //var ai = new TreeSearchNode(EncodeGameState());
-        //var b = ai.BestAction();
-        //GD.Print(b);
-        //Debug(ai);
-
     }
 
     //get rid of the string matching!
@@ -177,18 +145,6 @@ public class Game : Node2D
         return state;
     }
 
-    void CreateTrees()
-    {
-        ComponentFactory.Instance().CreateTree(6, 6);
-        ComponentFactory.Instance().CreateTree(8, 8);
-        ComponentFactory.Instance().CreateTree(6, 8);
-        ComponentFactory.Instance().CreateTree(8, 6);
-        ComponentFactory.Instance().CreateTree(1, 7);
-        ComponentFactory.Instance().CreateTree(13, 7);
-        ComponentFactory.Instance().CreateTree(7, 1);
-        ComponentFactory.Instance().CreateTree(7, 13);
-    }
-
     void CreateTimers()
     {
         var timerEntity = ComponentFactory.Instance().CreateTimer(ContextManager.GameInfo.TimerType, 
@@ -213,26 +169,20 @@ public class Game : Node2D
         Enemy.Resource = GameSystem.EntityManager.GetComponent<GResource>(Enemy.ResourceEntity);
     }
 
-    //Temporary
     void CreateKings()
     {
-        var king = ComponentFactory.Instance().CreateUnit(0, 0, Unit.King, User.Player);
-        kingMovementComponents[0] = GameSystem.EntityManager.GetComponent<Movement>(king);
-        kingMovementComponents[0].Disabled = true;
-
-        king = ComponentFactory.Instance().CreateUnit(_mapWidth - 1, _mapHeight - 1, Unit.King, User.Enemy);
-        kingMovementComponents[1] = GameSystem.EntityManager.GetComponent<Movement>(king);
-        kingMovementComponents[1].Disabled = true;
-
-        //if (gameInfo.KingCount == 1) //fix replay king count
+        Entity[] kings =
         {
-            king = ComponentFactory.Instance().CreateUnit(_mapWidth - 1, 0, Unit.King, User.Enemy);
-            kingMovementComponents[2] = GameSystem.EntityManager.GetComponent<Movement>(king);
-            kingMovementComponents[2].Disabled = true;
+            ComponentFactory.Instance().CreateUnit(0, 0, Unit.King, User.Player),
+            ComponentFactory.Instance().CreateUnit(_mapWidth - 1, _mapHeight - 1, Unit.King, User.Enemy),
+            ComponentFactory.Instance().CreateUnit(_mapWidth - 1, 0, Unit.King, User.Enemy),
+            ComponentFactory.Instance().CreateUnit(0, _mapHeight - 1, Unit.King, User.Player)
+        };
 
-            king = ComponentFactory.Instance().CreateUnit(0, _mapHeight - 1, Unit.King, User.Player);
-            kingMovementComponents[3] = GameSystem.EntityManager.GetComponent<Movement>(king);
-            kingMovementComponents[3].Disabled = true;
+        for (int i = 0; i < kings.Length; i++)
+        {
+            kingMovementComponents[i] = GameSystem.EntityManager.GetComponent<Movement>(kings[0]);
+            kingMovementComponents[i].Disabled = true;
         }
     }
 
@@ -324,7 +274,7 @@ public class Game : Node2D
 
         Action lastAction = Turn.GetUpdatedAction();
         if (lastAction != null)
-            ui.ChatActionLog(lastAction); //Should/can the null check be deferred?
+            UI.ChatActionLog(lastAction); //Should/can the null check be deferred?
 
         if (ContextManager.Context.GameOver) CheckRematch();
 
@@ -357,13 +307,8 @@ public class Game : Node2D
     {
         if (Turn.GetTurnCount() == 2)
         {
-            //for (int i = 0; i < gameInfo.KingCount * 2; i++) //fix here
-            {
-                kingMovementComponents[0].Disabled = false;
-                kingMovementComponents[1].Disabled = false;
-                kingMovementComponents[2].Disabled = false;
-                kingMovementComponents[3].Disabled = false;
-            }
+            foreach (Component component in kingMovementComponents)
+                component.Disabled = false;
         }
     }
 
@@ -384,8 +329,8 @@ public class Game : Node2D
     [RemoteSync]
     public void GameResult(string winner)
     {
-        ui.LocalChatMessage($"{winner} has won the game!");
-        ui.DisableSurrender();
+        UI.LocalChatMessage($"{winner} has won the game!");
+        UI.DisableSurrender();
         GameSystem.Input.processActionInput = false;
         ContextManager.SetGameOver();
 

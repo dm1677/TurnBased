@@ -124,8 +124,8 @@ public class InputHelper
             {
                 case ButtonList.Left:
 
-                    if (GameSystem.Game.ui.buildUnit.BuildingUnit && GameSystem.Game.Turn.IsMyTurn() && !GameSystem.Game.IsReplay)
-                        action = CreateAction(GameSystem.Game.ui.buildUnit.UnitToBuild);
+                    if (GameSystem.Game.UI.buildUnit.BuildingUnit && GameSystem.Game.Turn.IsMyTurn() && !GameSystem.Game.IsReplay)
+                        action = CreateAction(GameSystem.Game.UI.buildUnit.UnitToBuild);
                     else
                         HandleSelection();
                     break;
@@ -133,8 +133,8 @@ public class InputHelper
 
                 case ButtonList.Right:
                     
-                    if (GameSystem.Game.ui.buildUnit.BuildingUnit)
-                        GameSystem.Game.ui.buildUnit.BuildingUnit = false;
+                    if (GameSystem.Game.UI.buildUnit.BuildingUnit)
+                        GameSystem.Game.UI.buildUnit.BuildingUnit = false;
                     else if (GameSystem.Game.Turn.IsMyTurn() && selection != null && !GameSystem.Game.IsReplay)
                         action = MoveAction(selection);
                     break;
@@ -161,7 +161,7 @@ public class InputHelper
             if (action != null)
             {
                 GameSystem.Game.Turn.TakeTurn(action);
-                GameSystem.Game.ui.buildUnit.BuildingUnit = false;
+                GameSystem.Game.UI.buildUnit.BuildingUnit = false;
             }
         }
     }

@@ -291,10 +291,10 @@ public class Render : Node2D, IObserver
 
 	void DrawSpriteAtMouse()
 	{
-		if (!GameSystem.Game.ui.buildUnit.BuildingUnit) return;
+		if (!GameSystem.Game.UI.buildUnit.BuildingUnit) return;
 		
 		var mousePos = GameSystem.Input.GetClampedMousePosition();
-		var sprite = (Texture)GD.Load(GameSystem.Game.ui.buildUnit.UnitSprite);
+		var sprite = (Texture)GD.Load(GameSystem.Game.UI.buildUnit.UnitSprite);
 		var color = new Color(1, 1, 1);
 
 		var tilePos = GameSystem.Input.GetTilePositionAtMouse();
