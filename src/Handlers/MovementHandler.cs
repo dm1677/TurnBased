@@ -5,34 +5,15 @@ using static GameSystem;
 public class MovementHandler : IHandler
 {
     readonly HashSet<Movement> movementComponentList = new HashSet<Movement>();
-    readonly GameActionManager actionManager;
 
-    public MovementHandler(GameActionManager actionManager)
+    public bool Process(Action action)
     {
-        this.actionManager = actionManager;
-    }
-
-    public bool Process()
-    {
+        if (action == null) return false;
         UpdateComponentList();
-
         CheckEnableKingMovement();
 
-        var action = actionManager.GetLastAction();
-        if (action == null) return false;
-        if (CheckMovementAction(action))
-        {
-            if (CheckValidAction(action))
-            {
-                actionManager.ExecuteLastAction();
-                return true;
-            }
-            else
-            {
-                actionManager.RemoveInvalidAction(action);
-                return false;
-            }
-        }
+        if (action is MoveAction moveAction) return IsValidMoveAction(moveAction);
+        if (action is SwapAction swapAction) return IsValidSwapAction(swapAction);
         return true;
     }
 
@@ -49,61 +30,39 @@ public class MovementHandler : IHandler
         }
     }
 
-    bool CheckMovementAction(Action action)
+    bool IsValidMoveAction(MoveAction moveAction)
     {
-        if (action is MoveAction ||
-            action is AttackAction ||
-            action is SwapAction)
-            return true;
+        Entity entity = GameSystem.EntityManager.GetEntity(moveAction.EntityID);
+        Coords destination = new Coords(moveAction.DestinationX, moveAction.DestinationY);
+
+        Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
+        Movement movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
+
+        if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(entity)) return false;
+        if (!GameSystem.Map.IsPassable(destination)) return false;
+
+        var enemyUnit = CheckNearbyEnemies(entity, destination);
+        if (enemyUnit == null)
+            return CheckMovement(destination, position, movement);
         return false;
     }
 
-    bool CheckValidAction(Action action)
+    bool IsValidSwapAction(SwapAction swapAction)
     {
-        if (action is MoveAction moveAction)
-        {
-            var destination = new Coords(moveAction.DestinationX, moveAction.DestinationY);
+        if (swapAction.SwappedEntity == swapAction.SwappingEntity) return false;
+        Swap swap = GameSystem.EntityManager.GetComponent<Swap>(swapAction.SwappingEntity);
+        Swap swap2 = GameSystem.EntityManager.GetComponent<Swap>(swapAction.SwappedEntity);
 
-            var entity = GameSystem.EntityManager.GetEntity(moveAction.EntityID);
+        Position position = GameSystem.EntityManager.GetComponent<Position>(swapAction.SwappingEntity);
+        Position position2 = GameSystem.EntityManager.GetComponent<Position>(swapAction.SwappedEntity);
 
+        Owner owner = GameSystem.EntityManager.GetComponent<Owner>(swapAction.SwappingEntity);
+        Owner owner2 = GameSystem.EntityManager.GetComponent<Owner>(swapAction.SwappedEntity);
 
-            Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
-            Movement movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
-
-
-            if (GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(entity))
-            {
-                var enemyUnit = CheckNearbyEnemies(entity, destination);
-                if (enemyUnit != null)
-                    return CheckValidAction(new AttackAction(entity.ID, enemyUnit.ID));
-                return CheckMovement(destination, position, movement);
-            }
-            else return false;
-        }
-        else if (action is AttackAction)
-        {
-            actionManager.ReplaceLastAction(action);
-            return true;
-        }
-        else if (action is SwapAction swapAction)
-        {
-            if (swapAction.SwappedEntity == swapAction.SwappingEntity) return false;
-            Swap swap = GameSystem.EntityManager.GetComponent<Swap>(swapAction.SwappingEntity);
-            Swap swap2 = GameSystem.EntityManager.GetComponent<Swap>(swapAction.SwappedEntity);
-
-            Position position = GameSystem.EntityManager.GetComponent<Position>(swapAction.SwappingEntity);
-            Position position2 = GameSystem.EntityManager.GetComponent<Position>(swapAction.SwappedEntity);
-
-            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(swapAction.SwappingEntity);
-            Owner owner2 = GameSystem.EntityManager.GetComponent<Owner>(swapAction.SwappedEntity);
-
-            if (position == null || position2 == null || owner == null || owner2 == null) return false;
-            if (swap == null && swap2 == null) return false;
-            if (owner.ownedBy != owner2.ownedBy) return false;
-            if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(GameSystem.EntityManager.GetEntity(swapAction.SwappingEntity))) return false;
-            return true;
-        }
-
+        if (position == null || position2 == null || owner == null || owner2 == null) return false;
+        if (swap == null && swap2 == null) return false;
+        if (owner.ownedBy != owner2.ownedBy) return false;
+        if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(GameSystem.EntityManager.GetEntity(swapAction.SwappingEntity))) return false;
         return true;
     }
 

@@ -37,7 +37,7 @@ public class Game : Node2D
         InitialiseGameSystem(this, _mapWidth, _mapHeight);
         PlayerManager = new PlayerManager(ContextManager, playerInfoList);
         var actionManager = new GameActionManager();
-        Turn = new Turn(actionManager, ContextManager, new HandlerManager(actionManager));
+        Turn = new Turn(actionManager, ContextManager, new HandlerManager());
 
         gameSetup = (GameSetup)GetParent();
         Sync = gameSetup.sync;

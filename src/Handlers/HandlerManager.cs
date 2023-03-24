@@ -5,20 +5,20 @@ public class HandlerManager
 {
     private readonly List<IHandler> handlerList = new List<IHandler>();
 
-    public HandlerManager(GameActionManager actionManager)
+    public HandlerManager()
     {
-        handlerList.Add(new MovementHandler(actionManager));
+        handlerList.Add(new MovementHandler());
         handlerList.Add(new HealthHandler());
-        handlerList.Add(new ResourceHandler(actionManager));
+        handlerList.Add(new ResourceHandler());
         handlerList.Add(new EntityHandler());
         handlerList.Add(new TimerHandler());
     }
 
-    public bool ProcessHandlers()
+    public bool ProcessHandlers(Action action)
     {
         foreach (IHandler handler in handlerList)
         {
-            if (!handler.Process())
+            if (!handler.Process(action))
                 return false;
         }
 

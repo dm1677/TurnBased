@@ -2,9 +2,9 @@ using static GameSystem;
 
 public class EntityHandler : IHandler
 {
-    public bool Process()
+    public bool Process(Action action)
     {
-        if (GameSystem.Game.Turn.CheckTurnCount()) GameSystem.Game.Turn.ExecuteLastAction();
+        //if (GameSystem.Game.Turn.CheckTurnCount()) GameSystem.Game.Turn.ExecuteLastAction();
         ProcessEntityDeletion();
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         return true;

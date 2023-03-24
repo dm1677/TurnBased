@@ -6,26 +6,15 @@ public class ResourceHandler : IHandler
     const int _resourcesPerTurn = 1;
 
     readonly HashSet<GResource> resourceList = new HashSet<GResource>();
-    readonly GameActionManager actionManager;
 
-    public ResourceHandler(GameActionManager actionManager)
-    {
-        this.actionManager = actionManager;
-    }
-
-    public bool Process()
+    public bool Process(Action action)
     {
         if (resourceList.Count == 0) UpdateComponentList();
 
-        Action action = actionManager.GetLastAction();
         if (!UpdateResources(action))
-        {
-            actionManager.RemoveInvalidAction(actionManager.GetLastAction());
             return false;
-        }
 
         AddTurnResources();
-
         return true;
     }
 

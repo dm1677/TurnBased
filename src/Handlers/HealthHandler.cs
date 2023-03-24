@@ -5,7 +5,7 @@ public class HealthHandler : IHandler
 {
     readonly HashSet<Health> healthComponentList = new HashSet<Health>();
 
-    public bool Process()
+    public bool Process(Action action)
     {
         RefreshComponentList();
         ProcessHealth();
