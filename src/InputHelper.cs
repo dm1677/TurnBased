@@ -134,7 +134,7 @@ public class InputHelper
                     
                     if (GameSystem.Game.UI.buildUnit.BuildingUnit)
                         GameSystem.Game.UI.buildUnit.BuildingUnit = false;
-                    else if (GameSystem.Game.Turn.IsMyTurn() && selection != null && !GameSystem.Game.IsReplay)
+                    else if (GameSystem.Game.Turn.IsMyTurn() && selection != null && !GameSystem.Game.IsReplay && processActionInput)
                         action = RightClickWithEntitySelected(selection);
                     break;
 
@@ -249,18 +249,18 @@ public class InputHelper
         {
             Position clickedEntityPosition = GameSystem.EntityManager.GetComponent<Position>(e);
 
-            if (clickedEntityPosition != null && clickedEntityPosition.X == mousePos.X && clickedEntityPosition.Y == mousePos.Y)
+            if (clickedEntityPosition == null
+                || clickedEntityPosition.X != mousePos.X
+                || clickedEntityPosition.Y != mousePos.Y)
+                continue;
+
+            if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(e))
             {
-                if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(e))
-                {
-                    if (entity != e)
-                        return new SwapAction(entity.ID, e.ID);
-                }
-                else
-                {
-                    return new AttackAction(entity.ID, e.ID);
-                }
+                if (entity != e)
+                    return new SwapAction(entity.ID, e.ID);
             }
+            else
+                return new AttackAction(entity.ID, e.ID);
         }
         return new MoveAction(entity.ID, mousePos.X, mousePos.Y);
     }
