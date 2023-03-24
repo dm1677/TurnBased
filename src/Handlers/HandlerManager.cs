@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Godot;
+using System.Collections.Generic;
 
 public class HandlerManager
 {
@@ -27,8 +28,6 @@ public class HandlerManager
 
     public void ReverseHandlers()
     {
-        GameSystem.Game.Turn.AdvanceTurnState();
-
         for (int i = handlerList.Count - 1; i >= 0; i--)
             handlerList[i].Reverse();
 

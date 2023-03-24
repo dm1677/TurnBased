@@ -1,3 +1,4 @@
+using Godot;
 using static GameSystem;
 
 public class CreateAction : Action
@@ -29,15 +30,15 @@ public class CreateAction : Action
         {
             GameSystem.EntityManager.RestoreEntity(CreatedEntity.ID);
         }
-        
-        ReduceResources();        
+
+        ReduceResources();
     }
 
     public override void Undo()
     {
         ReverseReduceResources();
-        if (Input.GetSelection() == CreatedEntity)
-            Input.SetNullSelection();
+        if (GameSystem.Input.GetSelection() == CreatedEntity)
+            GameSystem.Input.SetNullSelection();
         GameSystem.EntityManager.DeleteEntity(CreatedEntity);
     }
 

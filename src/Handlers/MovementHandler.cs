@@ -1,3 +1,4 @@
+using Godot;
 using System.Collections.Generic;
 using static GameSystem;
 
@@ -18,9 +19,10 @@ public class MovementHandler : IHandler
         CheckEnableKingMovement();
 
         var action = actionManager.GetLastAction();
+        if (action == null) return false;
         if (CheckMovementAction(action))
         {
-            if (CheckValidAction(action) || GameSystem.Game.IsReplay)
+            if (CheckValidAction(action))
             {
                 actionManager.ExecuteLastAction();
                 return true;
@@ -78,9 +80,8 @@ public class MovementHandler : IHandler
             }
             else return false;
         }
-        else if (action is AttackAction AttackAction)
+        else if (action is AttackAction)
         {
-            if (GameSystem.Game.IsReplay) return true;
             actionManager.ReplaceLastAction(action);
             return true;
         }

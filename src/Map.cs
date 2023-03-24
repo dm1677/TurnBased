@@ -52,7 +52,12 @@ public class Map
     {
         return GetTile(x,y).Passable;
     }
-    
+
+    public bool IsPassable(Coords coords)
+    {
+        return IsPassable(coords.X, coords.Y);
+    }
+
     public bool IsInBounds(int x, int y)
     {
         if (x < 0

@@ -135,7 +135,7 @@ public class InputHelper
                     if (GameSystem.Game.UI.buildUnit.BuildingUnit)
                         GameSystem.Game.UI.buildUnit.BuildingUnit = false;
                     else if (GameSystem.Game.Turn.IsMyTurn() && selection != null && !GameSystem.Game.IsReplay)
-                        action = MoveAction(selection);
+                        action = RightClickWithEntitySelected(selection);
                     break;
 
                 case ButtonList.Middle://AI stuff, delete later!!!!!                    
@@ -241,32 +241,28 @@ public class InputHelper
         }
     }
 
-    //Returns a new MoveAction
-    Action MoveAction(Entity entity)
+    Action RightClickWithEntitySelected(Entity entity)
     {
-        if (processActionInput)
-        {
-            var id = entity.ID;
-            var mousePos = GetTilePositionAtMouse();
+        var mousePos = GetTilePositionAtMouse();
 
-            if (GameSystem.Map.IsPassable(mousePos.X, mousePos.Y))
-                return new MoveAction(id, mousePos.X, mousePos.Y);
-            else
+        foreach (Entity e in GameSystem.EntityManager.GetEntityList().Keys)
+        {
+            Position clickedEntityPosition = GameSystem.EntityManager.GetComponent<Position>(e);
+
+            if (clickedEntityPosition != null && clickedEntityPosition.X == mousePos.X && clickedEntityPosition.Y == mousePos.Y)
             {
-                foreach (Entity e in GameSystem.EntityManager.GetEntityList().Keys)
+                if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(e))
                 {
-                    Position clickedEntityPosition = GameSystem.EntityManager.GetComponent<Position>(e);
-                    
-                    if (clickedEntityPosition != null && clickedEntityPosition.X == mousePos.X && clickedEntityPosition.Y == mousePos.Y)
-                    {
-                        if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(e) && entity!= e)
-                            return new SwapAction(id, e.ID);
-                    }
+                    if (entity != e)
+                        return new SwapAction(entity.ID, e.ID);
                 }
-                return new MoveAction(id, mousePos.X, mousePos.Y);
+                else
+                {
+                    return new AttackAction(entity.ID, e.ID);
+                }
             }
         }
-        return null;
+        return new MoveAction(entity.ID, mousePos.X, mousePos.Y);
     }
 
     //Returns a new CreateAction
