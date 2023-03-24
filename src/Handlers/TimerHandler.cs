@@ -11,7 +11,7 @@ public class TimerHandler : IHandler
         players.Add(Enemy);
     }
 
-    public bool Process()
+    public bool Process(Action action)
     {
         if (!GameSystem.Game.IsReplay && !GameSystem.Game.IsSingleplayer)
         {
