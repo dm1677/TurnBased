@@ -152,6 +152,7 @@ public class Turn
 		}
 		else
 		{
+			actionManager.RemoveInvalidAction(action);
 			ReverseTurnState();
 			return false;
 		}

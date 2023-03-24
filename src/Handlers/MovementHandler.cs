@@ -14,6 +14,7 @@ public class MovementHandler : IHandler
 
         if (action is MoveAction moveAction) return IsValidMoveAction(moveAction);
         if (action is SwapAction swapAction) return IsValidSwapAction(swapAction);
+        if (action is AttackAction attackAction) return IsValidAttackAction(attackAction);
         return true;
     }
 
@@ -44,7 +45,7 @@ public class MovementHandler : IHandler
         var enemyUnit = CheckNearbyEnemies(entity, destination);
         if (enemyUnit == null)
             return CheckMovement(destination, position, movement);
-        return false;
+        return true;
     }
 
     bool IsValidSwapAction(SwapAction swapAction)
@@ -64,6 +65,16 @@ public class MovementHandler : IHandler
         if (owner.ownedBy != owner2.ownedBy) return false;
         if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(GameSystem.EntityManager.GetEntity(swapAction.SwappingEntity))) return false;
         return true;
+    }
+
+    bool IsValidAttackAction(AttackAction attackAction)
+    {
+        Entity attacker = GameSystem.EntityManager.GetEntity(attackAction.AttackerID);
+        Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(attacker);
+        List<Entity> attackedEntities = Attack(attacker, weapon.attackType);
+
+        Entity defender = GameSystem.EntityManager.GetEntity(attackAction.AttackerID);
+        return attackedEntities.Contains(defender);
     }
 
     Entity CheckNearbyEnemies(Entity entity, Coords destination)

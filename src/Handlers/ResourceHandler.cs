@@ -7,10 +7,18 @@ public class ResourceHandler : IHandler
 
     readonly HashSet<GResource> resourceList = new HashSet<GResource>();
 
+    public ResourceHandler()
+    {
+        var list = GameSystem.EntityManager.GetEntityList().Keys;
+        foreach (Entity entity in list)
+        {
+            var resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
+            if (resource != null) resourceList.Add(resource);
+        }
+    }
+
     public bool Process(Action action)
     {
-        if (resourceList.Count == 0) UpdateComponentList();
-
         if (!UpdateResources(action))
             return false;
 
@@ -21,16 +29,6 @@ public class ResourceHandler : IHandler
     public void Reverse()
     {
         ReverseTurnResources();
-    }
-
-    void UpdateComponentList()
-    {
-        var list = GameSystem.EntityManager.GetEntityList().Keys;
-        foreach (Entity entity in list)
-        {
-            var resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
-            if (resource != null) resourceList.Add(resource);
-        }
     }
 
     bool UpdateResources(Action action)

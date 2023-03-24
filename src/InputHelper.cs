@@ -245,22 +245,22 @@ public class InputHelper
     {
         var mousePos = GetTilePositionAtMouse();
 
-        foreach (Entity e in GameSystem.EntityManager.GetEntityList().Keys)
+        foreach (Entity otherEntity in GameSystem.EntityManager.GetEntityList().Keys)
         {
-            Position clickedEntityPosition = GameSystem.EntityManager.GetComponent<Position>(e);
+            Position otherEntityPosition = GameSystem.EntityManager.GetComponent<Position>(otherEntity);
 
-            if (clickedEntityPosition == null
-                || clickedEntityPosition.X != mousePos.X
-                || clickedEntityPosition.Y != mousePos.Y)
+            if (otherEntityPosition == null
+                || otherEntityPosition.X != mousePos.X
+                || otherEntityPosition.Y != mousePos.Y)
                 continue;
 
-            if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(e))
+            if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(otherEntity))
             {
-                if (entity != e)
-                    return new SwapAction(entity.ID, e.ID);
+                if (entity != otherEntity)
+                    return new SwapAction(entity.ID, otherEntity.ID);
             }
             else
-                return new AttackAction(entity.ID, e.ID);
+                return new AttackAction(entity.ID, otherEntity.ID);
         }
         return new MoveAction(entity.ID, mousePos.X, mousePos.Y);
     }
