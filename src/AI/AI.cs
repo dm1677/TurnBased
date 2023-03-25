@@ -195,7 +195,7 @@ public class AI
                             {
                                 foreach (UnitState attackedUnit in list)
                                 {
-                                    //Godot.Logging.Log(enemyKingDiagonals.Count + " Diagonals checked :: Attacks: " + list.Count);
+                                    //Logging.Log(enemyKingDiagonals.Count + " Diagonals checked :: Attacks: " + list.Count);
                                     if (attackedUnit != tempUnit)
                                         create = true;
                                 }
@@ -388,8 +388,8 @@ public class AI
 
     void PrintUnitInfo(UnitState unit)
     {
-        Godot.Logging.Log("Unit Type: " + unit.UnitType);
-        Godot.Logging.Log("Health: " + unit.Health);
+        Logging.Log("Unit Type: " + unit.UnitType);
+        Logging.Log("Health: " + unit.Health);
     }
 
     public AIAction GetRandomMove(GameState state, User player)
@@ -412,9 +412,9 @@ public class AI
             if (a is AICreateAction b)
                 createActions++;
         }
-        Godot.Logging.Log("Attack Actions: " + attackActions);
-        Godot.Logging.Log("Move Actions: " + moveActions);
-        Godot.Logging.Log("Create Actions: " + createActions);
+        Logging.Log("Attack Actions: " + attackActions);
+        Logging.Log("Move Actions: " + moveActions);
+        Logging.Log("Create Actions: " + createActions);
     }
 
     public static void DebugAction(AIAction action)
@@ -426,6 +426,6 @@ public class AI
             str = b.unit.UnitType + " at " + b.unit.X + ", " + b.unit.Y + " moves to " + b.x + ", " + b.y;
         if (action is AICreateAction c)
             str = c.unitType + " is created at " + c.x + ", " + c.y;
-        Godot.Logging.Log(str);
+        Logging.Log(str);
     }
 }

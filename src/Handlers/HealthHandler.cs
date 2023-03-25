@@ -136,7 +136,7 @@ public class HealthHandler : IHandler
                 count++;
             }
         }
-        Godot.Logging.Log(count);
+        Logging.Log(count);
         return count;
     }
 
