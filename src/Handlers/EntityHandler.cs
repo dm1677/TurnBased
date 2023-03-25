@@ -16,7 +16,7 @@ public class EntityHandler : IHandler
             if (!entity.QueuedForDeletion)
             {
                 GameSystem.EntityManager.RestoreEntity(entity.ID);
-                //break;
+                break;
             }
         }
     }
@@ -30,7 +30,7 @@ public class EntityHandler : IHandler
                 if (Input.GetSelection() == entity)
                     Input.SetNullSelection();
                 GameSystem.EntityManager.DeleteEntity(entity);
-                //break;
+                break;
             }
         }
     }
