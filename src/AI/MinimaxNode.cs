@@ -74,11 +74,11 @@ public class MinimaxNode
             }
         }
 
-        Godot.GD.Print("AI Static Evaluation: " + GetEvaluation());
-        Godot.GD.Print("AI Evaluation: " + best);
-        Godot.GD.Print(nodes + " nodes evaluated");
-        Godot.GD.Print(legalActions.Count + " actions considered");
-        //Godot.GD.Print(state.units.Count + " active entities");
+        Godot.Logging.Log("AI Static Evaluation: " + GetEvaluation());
+        Godot.Logging.Log("AI Evaluation: " + best);
+        Godot.Logging.Log(nodes + " nodes evaluated");
+        Godot.Logging.Log(legalActions.Count + " actions considered");
+        //Godot.Logging.Log(state.units.Count + " active entities");
         nodes = 0;
 
         AI.DebugAction(bestAction);

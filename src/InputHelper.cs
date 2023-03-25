@@ -147,7 +147,7 @@ public class InputHelper
 
                     if (GameSystem.Game.Turn.GetTurnCount() == 1)
                     {
-                        GD.Print("Hi");
+                        Logging.Log("Hi");
                         var rid = 0;
                         if (GameSystem.Player.ID != (int)pp) rid = GameSystem.Player.ResourceEntity.ID;
                         else rid = Enemy.ResourceEntity.ID;

@@ -221,7 +221,7 @@ public class Turn
 	{
         if (actionManager.GetActionCount() > 0)
         {
-			GD.Print("Reverse Replay: " + actionManager.GetLastAction().GetHashCode());
+			Logging.Log("Reverse Replay: " + actionManager.GetLastAction().GetHashCode());
             var lastAction = actionManager.GetLastAction();
             actionManager.RemoveInvalidAction(lastAction);
             lastAction.Undo();

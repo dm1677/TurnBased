@@ -73,12 +73,12 @@ public class MovementHandler : IHandler
         Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(attacker);
         List<Entity> attackedEntities = Attack(attacker, weapon.attackType);
         foreach (Entity e in attackedEntities)
-            Godot.GD.Print("Attacked entity ID: " + e.ID);
+            Godot.Logging.Log("Attacked entity ID: " + e.ID);
 
         Entity defender = GameSystem.EntityManager.GetEntity(attackAction.DefenderID);
         var a = attackedEntities.Contains(defender);
-        Godot.GD.Print("Defender's ID: " + defender.ID);
-        Godot.GD.Print("Attack action accepted: " + a);
+        Godot.Logging.Log("Defender's ID: " + defender.ID);
+        Godot.Logging.Log("Attack action accepted: " + a);
         return a;
     }
 

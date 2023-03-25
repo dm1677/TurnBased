@@ -18,7 +18,7 @@ public class CreateAction : Action
             UnitType = unitType;
             Owner = owner;
             ResourceEntityID = resourceEntityID;
-            GD.Print($"{this} created: {GetHashCode()}");
+            Logging.Log($"{this} created: {GetHashCode()}");
     }
 
 	public override void Execute()

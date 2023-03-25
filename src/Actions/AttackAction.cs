@@ -13,8 +13,8 @@ public class AttackAction : Action
 	{
 		AttackerID = attacker;
         DefenderID = defender;
-        GD.Print($"{this} created: {GetHashCode()}");
-        GD.Print($"Attacker: {AttackerID}, Defender: {DefenderID}");
+        Logging.Log($"{this} created: {GetHashCode()}");
+        Logging.Log($"Attacker: {AttackerID}, Defender: {DefenderID}");
 	}
 
     public override void Execute()

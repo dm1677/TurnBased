@@ -97,7 +97,7 @@ public class TreeSearchNode
 
     void Debug(TreeSearchNode a)
     {
-        Godot.GD.Print(!a.IsFullyExpanded());
+        Godot.Logging.Log(!a.IsFullyExpanded());
     }
 
     TreeSearchNode TreePolicy()
@@ -106,7 +106,7 @@ public class TreeSearchNode
         
         while (!currentNode.IsTerminalNode())
         {
-            Godot.GD.Print("wee");
+            Godot.Logging.Log("wee");
             if (!currentNode.IsFullyExpanded())
                 return currentNode.Expand();
             else

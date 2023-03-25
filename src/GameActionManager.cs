@@ -32,7 +32,7 @@ public class GameActionManager
         }
         catch (Exception e)
         {
-            Godot.GD.Print("SerialiseList exception: " + e);
+            Godot.Logging.Log("SerialiseList exception: " + e);
         }
     }
 

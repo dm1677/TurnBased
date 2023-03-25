@@ -125,7 +125,7 @@ public class GameSetup : Node
 
 	void OnConnectionFailed()
 	{
-		GD.Print("Connection failed.");
+		Logging.Log("Connection failed.");
 		EmitSignal(nameof(ConnectionFailed));
 	}
 
@@ -151,7 +151,7 @@ public class GameSetup : Node
 	void OnConnectedToServer()
 	{
 		//EmitSignal(nameof(ConnectionSuccess));
-		//GD.Print("Connection Success");
+		//Logging.Log("Connection Success");
 	}
 
 	[Remote]
@@ -160,7 +160,7 @@ public class GameSetup : Node
 		if (version != _VERSION)
 		{
 			EndSession();
-			GD.Print("Game versions incompatible!");
+			Logging.Log("Game versions incompatible!");
 		}
 	}
 
@@ -221,7 +221,7 @@ public class GameSetup : Node
 
 		game = (Game)Game.InstantiateChildNode(gameNode, this);
 		game.Name = gameID++.ToString();
-		GD.Print("Game ID: " + gameID);
+		Logging.Log("Game ID: " + gameID);
 		game.Initialise(gameInfo, PlayerInfo);
 
 		ClearLobby();
