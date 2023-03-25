@@ -4,14 +4,9 @@ public static class Logging
 {
     public const bool LOGGING_ENABLED = true;
 
-    public static void Log(string str)
+    public static void Log(object message)
     {
         if (!LOGGING_ENABLED) { return; }
-        GD.Print(str);
-    }
-
-    public static void Log(bool str)
-    {
-        Log(str.ToString());
+        GD.Print(message.ToString());
     }
 }
