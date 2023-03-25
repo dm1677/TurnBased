@@ -9,4 +9,9 @@ public static class Logging
         if (!LOGGING_ENABLED) { return; }
         GD.Print(str);
     }
+
+    public static void Log(bool str)
+    {
+        Log(str.ToString());
+    }
 }
