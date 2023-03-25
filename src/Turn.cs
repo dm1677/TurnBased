@@ -145,7 +145,7 @@ public class Turn
 		Action action = actionManager.GetLastAction();
         if (handlerManager.ProcessHandlers(action))
 		{
-			action.Execute();
+			ExecuteLastAction();
 			AdvanceTurnState();
             if (!contextManager.IsReplay) GameSystem.Sound.PlaySound(Sound.Effect.Turn);
             return true;

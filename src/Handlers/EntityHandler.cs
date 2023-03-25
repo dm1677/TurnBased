@@ -4,7 +4,6 @@ public class EntityHandler : IHandler
 {
     public bool Process(Action action)
     {
-        //if (GameSystem.Game.Turn.CheckTurnCount()) GameSystem.Game.Turn.ExecuteLastAction();
         ProcessEntityDeletion();
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         return true;
@@ -17,7 +16,7 @@ public class EntityHandler : IHandler
             if (!entity.QueuedForDeletion)
             {
                 GameSystem.EntityManager.RestoreEntity(entity.ID);
-                break;
+                //break;
             }
         }
     }
@@ -31,7 +30,7 @@ public class EntityHandler : IHandler
                 if (Input.GetSelection() == entity)
                     Input.SetNullSelection();
                 GameSystem.EntityManager.DeleteEntity(entity);
-                break;
+                //break;
             }
         }
     }
