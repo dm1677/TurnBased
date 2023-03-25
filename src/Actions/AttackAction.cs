@@ -1,3 +1,4 @@
+using Godot;
 using static GameSystem;
 
 public class AttackAction : Action
@@ -12,6 +13,8 @@ public class AttackAction : Action
 	{
 		AttackerID = attacker;
         DefenderID = defender;
+        GD.Print($"{this} created: {GetHashCode()}");
+        GD.Print($"Attacker: {AttackerID}, Defender: {DefenderID}");
 	}
 
     public override void Execute()
@@ -69,8 +72,7 @@ public class AttackAction : Action
     public override void Undo()
     {
         var attacker = GameSystem.EntityManager.GetEntity(AttackerID);
-        //var defender = entityManager.GetEntity(defenderID);
-        Entity defender = null;
+        Entity defender;
 
         Position position = GameSystem.EntityManager.GetComponent<Position>(attacker);
 

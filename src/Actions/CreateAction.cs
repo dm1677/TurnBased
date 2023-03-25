@@ -12,13 +12,14 @@ public class CreateAction : Action
 
 
     public CreateAction(int x, int y, int unitType, int owner, int resourceEntityID)
-	    {
+	{
 		    X = x;
 		    Y = y;
             UnitType = unitType;
             Owner = owner;
             ResourceEntityID = resourceEntityID;
-	    }
+            GD.Print($"{this} created: {GetHashCode()}");
+    }
 
 	public override void Execute()
 	{

@@ -22,6 +22,9 @@ class RenderEntity : Godot.Sprite
 
     bool performChecks = true;
 
+    ///
+    Label tempnode = new Label();
+
     public void Initialise(Entity entity)
     {
         this.entity = entity;
@@ -32,6 +35,10 @@ class RenderEntity : Godot.Sprite
         healthNode = new HealthNode();
         healthNode.Initialise(entity);
         AddChild(healthNode);
+
+        ///
+        AddChild(tempnode);
+        tempnode.Text = entity.ID.ToString();
     }
 
     public override void _Process(float delta)

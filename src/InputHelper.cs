@@ -247,6 +247,7 @@ public class InputHelper
 
         foreach (Entity otherEntity in GameSystem.EntityManager.GetEntityList().Keys)
         {
+            if (otherEntity == entity) continue;
             Position otherEntityPosition = GameSystem.EntityManager.GetComponent<Position>(otherEntity);
 
             if (otherEntityPosition == null
@@ -255,10 +256,7 @@ public class InputHelper
                 continue;
 
             if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(otherEntity))
-            {
-                if (entity != otherEntity)
-                    return new SwapAction(entity.ID, otherEntity.ID);
-            }
+                return new SwapAction(entity.ID, otherEntity.ID);
             else
                 return new AttackAction(entity.ID, otherEntity.ID);
         }

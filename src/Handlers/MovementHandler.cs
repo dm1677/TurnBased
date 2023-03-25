@@ -72,9 +72,14 @@ public class MovementHandler : IHandler
         Entity attacker = GameSystem.EntityManager.GetEntity(attackAction.AttackerID);
         Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(attacker);
         List<Entity> attackedEntities = Attack(attacker, weapon.attackType);
+        foreach (Entity e in attackedEntities)
+            Godot.GD.Print("Attacked entity ID: " + e.ID);
 
-        Entity defender = GameSystem.EntityManager.GetEntity(attackAction.AttackerID);
-        return attackedEntities.Contains(defender);
+        Entity defender = GameSystem.EntityManager.GetEntity(attackAction.DefenderID);
+        var a = attackedEntities.Contains(defender);
+        Godot.GD.Print("Defender's ID: " + defender.ID);
+        Godot.GD.Print("Attack action accepted: " + a);
+        return a;
     }
 
     Entity CheckNearbyEnemies(Entity entity, Coords destination)
@@ -158,14 +163,14 @@ public class MovementHandler : IHandler
         return false;
     }
 
-    public static List<Entity> Attack(Entity selection, AttackType direction)
+    public static List<Entity> Attack(Entity entity, AttackType direction)
     {
         List<Entity> enemyUnitCollisions = new List<Entity>();
-        if (selection == null) return enemyUnitCollisions;
+        if (entity == null) return enemyUnitCollisions;
 
-        var selectionList = GameSystem.EntityManager.GetComponentList(selection);
+        var selectionList = GameSystem.EntityManager.GetComponentList(entity);
 
-        Owner owner = GameSystem.EntityManager.GetComponent<Owner>(selection);
+        Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
         if (owner == null) return enemyUnitCollisions;
         var ownedBy = (int)owner.ownedBy;
 
@@ -180,9 +185,9 @@ public class MovementHandler : IHandler
 
         List<Position> enemyPositions = new List<Position>();
 
-        foreach (Entity entity in GameSystem.EntityManager.GetEnemyUnits(ownedBy))
+        foreach (Entity enemyUnit in GameSystem.EntityManager.GetEnemyUnits(ownedBy))
         {
-            Position pos = GameSystem.EntityManager.GetComponent<Position>(entity);
+            Position pos = GameSystem.EntityManager.GetComponent<Position>(enemyUnit);
             if (pos != null) enemyPositions.Add(pos);
         }
 

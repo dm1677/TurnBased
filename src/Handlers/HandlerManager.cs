@@ -21,7 +21,7 @@ public class HandlerManager
             if (!handler.Process(action))
                 return false;
         }
-
+        GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         System.GC.Collect(); //Godot memory leak - objects created when the mouse is moved are never disposed
         return true;
     }
