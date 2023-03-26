@@ -94,7 +94,8 @@ public class GameActionManager
         if ((GetActionCount() > 0 && lastAction != GetLastAction())
             || (lastAction == null && GetActionCount() >= 1))
         {
-            return GetLastAction();
+            lastAction = GetLastAction();
+            return lastAction;
         }
         return null;
     }

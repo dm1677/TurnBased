@@ -16,6 +16,7 @@ public class HandlerManager
 
     public bool ProcessHandlers(Action action)
     {
+        GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
         foreach (IHandler handler in handlerList)
         {
             if (!handler.Process(action))
