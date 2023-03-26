@@ -6,15 +6,19 @@ public class MovementHandler : IHandler
 {
     readonly HashSet<Movement> movementComponentList = new HashSet<Movement>();
 
+    public bool Validate(Action action)
+    {
+        if (action is MoveAction moveAction) return IsValidMoveAction(moveAction);
+        if (action is SwapAction swapAction) return IsValidSwapAction(swapAction);
+        if (action is AttackAction attackAction) return IsValidAttackAction(attackAction);
+        return true;
+    }
+
     public bool Process(Action action)
     {
         if (action == null) return false;
         UpdateComponentList();
         CheckEnableKingMovement();
-
-        if (action is MoveAction moveAction) return IsValidMoveAction(moveAction);
-        if (action is SwapAction swapAction) return IsValidSwapAction(swapAction);
-        if (action is AttackAction attackAction) return IsValidAttackAction(attackAction);
         return true;
     }
 
@@ -175,11 +179,7 @@ public class MovementHandler : IHandler
         var ownedBy = (int)owner.ownedBy;
 
         Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(selectionList);
-        int range = 0;
-        if (weapon != null)
-        {
-            range = weapon.range;
-        }
+        int range = (weapon != null) ? weapon.range : 0;
 
         Position selectionPosition = GameSystem.EntityManager.GetComponent<Position>(selectionList);
 
@@ -190,6 +190,7 @@ public class MovementHandler : IHandler
             Position pos = GameSystem.EntityManager.GetComponent<Position>(enemyUnit);
             if (pos != null) enemyPositions.Add(pos);
         }
+
 
         List<(int, int)> vectors = new List<(int, int)>(0);
 

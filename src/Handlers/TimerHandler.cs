@@ -11,6 +11,11 @@ public class TimerHandler : IHandler
         players.Add(Enemy);
     }
 
+    public bool Validate(Action action)
+    {
+        return true;
+    }
+
     public bool Process(Action action)
     {
         if (!GameSystem.Game.IsReplay && !GameSystem.Game.IsSingleplayer)

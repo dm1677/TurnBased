@@ -5,6 +5,11 @@ public class HealthHandler : IHandler
 {
     readonly HashSet<Health> healthComponentList = new HashSet<Health>();
 
+    public bool Validate(Action action)
+    {
+        return true;
+    }
+
     public bool Process(Action action)
     {
         RefreshComponentList();

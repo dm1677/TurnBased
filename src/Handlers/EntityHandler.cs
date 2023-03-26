@@ -2,6 +2,11 @@ using static GameSystem;
 
 public class EntityHandler : IHandler
 {
+    public bool Validate(Action action)
+    {
+        return true;
+    }
+
     public bool Process(Action action)
     {
         ProcessEntityDeletion();

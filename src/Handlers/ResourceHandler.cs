@@ -7,6 +7,11 @@ public class ResourceHandler : IHandler
 
     readonly HashSet<GResource> resourceList = new HashSet<GResource>();
 
+    public bool Validate(Action action)
+    {
+        return true;
+    }
+
     public ResourceHandler()
     {
         var list = GameSystem.EntityManager.GetEntityList().Keys;

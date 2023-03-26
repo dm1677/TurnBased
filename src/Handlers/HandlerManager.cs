@@ -14,6 +14,16 @@ public class HandlerManager
         handlerList.Add(new TimerHandler());
     }
 
+    public bool IsValidAction(Action action)
+    {
+        foreach (IHandler handler in handlerList)
+        {
+            if (!handler.Validate(action))
+                return false;
+        }
+        return true;
+    }
+
     public bool ProcessHandlers(Action action)
     {
         GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
