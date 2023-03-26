@@ -9,24 +9,12 @@ public class ResourceHandler : IHandler
 
     public bool Validate(Action action)
     {
-        return true;
-    }
-
-    public ResourceHandler()
-    {
-        var list = GameSystem.EntityManager.GetEntityList().Keys;
-        foreach (Entity entity in list)
-        {
-            var resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
-            if (resource != null) resourceList.Add(resource);
-        }
+        return IsValidCreateAction(action);
     }
 
     public bool Process(Action action)
     {
-        if (!UpdateResources(action))
-            return false;
-
+        UpdateResourceList();
         AddTurnResources();
         return true;
     }
@@ -36,7 +24,7 @@ public class ResourceHandler : IHandler
         ReverseTurnResources();
     }
 
-    bool UpdateResources(Action action)
+    bool IsValidCreateAction(Action action)
     {
         if (action is CreateAction createAction)
         {
@@ -51,11 +39,10 @@ public class ResourceHandler : IHandler
                     var cost = CostToBuildUnit(unitType, resource);
 
                     if (cost == -1) return false;
-                    else return true;
+                    return (cost <= resource.Value);
                 }
             }
         }
-
         return true;
     }
     
@@ -71,6 +58,16 @@ public class ResourceHandler : IHandler
         foreach (GResource resource in resourceList)
             if (GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(resource.Parent))
                 resource.Value -= _resourcesPerTurn;
+    }
+
+    void UpdateResourceList()
+    {
+        var list = GameSystem.EntityManager.GetEntityList().Keys;
+        foreach (Entity entity in list)
+        {
+            var resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
+            if (resource != null) resourceList.Add(resource);
+        }
     }
 
     //Returns -1 if not enough resources
