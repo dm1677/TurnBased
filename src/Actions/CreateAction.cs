@@ -64,8 +64,8 @@ public class CreateAction : Action
 
         foreach (Entity entity in entityList)
         {
-            var resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
-            var owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
+            GResource resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
+            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
 
             if (owner != null && resource != null && owner.ownedBy == owningPlayer)
             {

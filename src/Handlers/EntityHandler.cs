@@ -16,14 +16,6 @@ public class EntityHandler : IHandler
 
     public void Reverse()
     {
-        foreach (Entity entity in GameSystem.EntityManager.GetInactiveEntityList().Keys)
-        {
-            if (!entity.QueuedForDeletion)
-            {
-                GameSystem.EntityManager.RestoreEntity(entity.ID);
-                break;
-            }
-        }
     }
 
     void ProcessEntityDeletion()

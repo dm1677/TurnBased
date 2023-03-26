@@ -118,18 +118,6 @@ public class Turn
 		actionManager.SetReplay(); //better way to do this?
 	}
 
-	//Keeping just in case something breaks
-	//public void ExecuteAction()
-	//{
-	//	if (actionList.Count > 0)
-	//	{
-	//		actionList[turnCount - 1].Execute();
-	//		IncrementTurnCount();
-	//	}
-	//	else
-	//		throw new Exception("There are no actions in the list.");
-	//}
-
 	public Action GetUpdatedAction()
 	{
 		return actionManager.GetUpdatedAction(); //Is there a better way of doing this?
@@ -209,7 +197,6 @@ public class Turn
                 break;
 		}
 	}
-
 
 	//Should these two methods exist here?
 	public void AdvanceReplay()
