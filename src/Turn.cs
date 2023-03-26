@@ -37,7 +37,8 @@ public class Turn
                 SetTurnState(TurnState.WaitForInput);
                 break;
 		}
-	}
+        GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
+    }
 
 	public void ReverseTurnState()
 	{
@@ -56,7 +57,8 @@ public class Turn
 				SetTurnState(TurnState.WaitForEnemyInput);
 				break;
 		}
-	}
+        GameSystem.Map.UpdatePassability(GameSystem.EntityManager.GetPositions());
+    }
 
     public void SwapTurn()
 	{
@@ -135,7 +137,7 @@ public class Turn
 
 	public void TakeTurn(Action action)
 	{
-		actionManager.AddActionToList(action);
+        actionManager.AddActionToList(action);
 		AdvanceTurnState();
 	}
 
