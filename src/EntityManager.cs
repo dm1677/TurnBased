@@ -35,9 +35,10 @@ public class EntityManager
             throw new IndexOutOfRangeException("Exceeded maximum possible number of entities.");
         }
 
-        Entity entity = new Entity(entityIDCount++);
+        List<Component> components = new List<Component>();
+        Entity entity = new Entity(entityIDCount++, components);
 
-        componentList.Add(entity, new List<Component>());
+        componentList.Add(entity, components);
         EntityAdded(entity);
 
         return entity;
@@ -124,10 +125,7 @@ public class EntityManager
 
             return list;
         }
-        else
-        {
-            throw new Exception("Entity not contained in deletedEntities.");
-        }
+        else return new List<Component>();
     }
 
     public void AddComponent(Entity entity, Component component)
@@ -136,10 +134,6 @@ public class EntityManager
         {
             GetComponentList(entity).Add(component);
             component.Parent = entity;
-        }
-        else
-        {
-            throw new ArgumentNullException("Null component");
         }
     }
 
@@ -156,13 +150,9 @@ public class EntityManager
         {
             var list = GetComponentList(entity);
             if (list.Contains(component))
-            {
                 list.Remove(component);
-            }
             else
-            {
                 throw new ArgumentNullException("RemoveComponent() : Null component");
-            }
         }
     }
 
