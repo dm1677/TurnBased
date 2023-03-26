@@ -86,10 +86,10 @@ public class Game : Node2D
 
         foreach (Entity entity in list.Keys)
         {
-            Name name = GameSystem.EntityManager.GetComponent<Name>(entity);
-            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
-            Health health = GameSystem.EntityManager.GetComponent<Health>(entity);
-            Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
+            Name name = entity.GetComponent<Name>();
+            Owner owner = entity.GetComponent<Owner>();
+            Health health = entity.GetComponent<Health>();
+            Position position = entity.GetComponent<Position>();
 
             var player = owner.ownedBy;
             int hp = 0, x = 0, y = 0;
@@ -119,7 +119,7 @@ public class Game : Node2D
                         unitType = Unit.Building;
                         break;
                     case "Money":
-                        GResource resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
+                        GResource resource = entity.GetComponent<GResource>();
                         hp = resource.Value;
                         x = -1;
                         y = -1;
@@ -139,10 +139,10 @@ public class Game : Node2D
     void CreateResources()
     {
         GameSystem.Player.ResourceEntity = ComponentFactory.Instance().CreateResource(GameSystem.Player.ID);
-        GameSystem.Player.Resource = GameSystem.EntityManager.GetComponent<GResource>(GameSystem.Player.ResourceEntity);
+        GameSystem.Player.Resource = GameSystem.Player.ResourceEntity.GetComponent<GResource>();
 
         Enemy.ResourceEntity = ComponentFactory.Instance().CreateResource(Enemy.ID);
-        Enemy.Resource = GameSystem.EntityManager.GetComponent<GResource>(Enemy.ResourceEntity);
+        Enemy.Resource = Enemy.ResourceEntity.GetComponent<GResource>();
     }
 
     void CreateKings()
@@ -157,7 +157,7 @@ public class Game : Node2D
 
         for (int i = 0; i < kings.Length; i++)
         {
-            kingMovementComponents[i] = GameSystem.EntityManager.GetComponent<Movement>(kings[i]);
+            kingMovementComponents[i] = kings[i].GetComponent<Movement>();
             kingMovementComponents[i].Disabled = true;
         }
     }

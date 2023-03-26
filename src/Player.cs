@@ -41,7 +41,7 @@ public class Player
     public void SetTimer(Entity entity)
     {
         TimerEntity = entity;
-        Timer = GameSystem.EntityManager.GetComponent<Timer>(entity);
+        Timer = entity.GetComponent<Timer>();
     }
 
     public void ProcessTimer()

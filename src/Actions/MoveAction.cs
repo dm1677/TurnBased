@@ -22,9 +22,8 @@ public class MoveAction : Action
 
     public override void Execute()
     {
-        Entity entity = GameSystem.EntityManager.GetEntity(EntityID);
-        entityPosition = GameSystem.EntityManager.GetComponent<Position>(entity);
-        Movement entityMovement = GameSystem.EntityManager.GetComponent<Movement>(entity);
+        entityPosition = GameSystem.EntityManager.GetComponent<Position>(EntityID);
+        Movement entityMovement = GameSystem.EntityManager.GetComponent<Movement>(EntityID);
 
         if (entityMovement != null)
         {

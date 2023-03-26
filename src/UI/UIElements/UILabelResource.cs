@@ -23,9 +23,9 @@ public class UILabelResource : UILabel
         var entityList = GameSystem.EntityManager.GetEntityList().Keys;
         foreach (Entity entity in entityList)
         {
-            GResource resourceComponent = GameSystem.EntityManager.GetComponent<GResource>(entity);
+            GResource resourceComponent = entity.GetComponent<GResource>();
             if (resourceComponent == null) continue;
-            Owner o = GameSystem.EntityManager.GetComponent<Owner>(entity);
+            Owner o = entity.GetComponent<Owner>();
             User owner = o.ownedBy;
 
             if (owner == (User)currentPlayer)

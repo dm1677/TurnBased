@@ -230,7 +230,7 @@ public class GameUI : Control
 			string playerName = (owner == User.Player) ? player.GetName() : enemy.GetName();
 			sprite = (Sprite)entityManager.GetComponent(createAction._createdEntity, "Sprite");
 			message = $"{playerName} created {name} at {createAction.x}, {createAction.y}";*/
-            Sprite unitSprite = GameSystem.EntityManager.GetComponent<Sprite>(createAction.CreatedEntity);
+            Sprite unitSprite = createAction.CreatedEntity.GetComponent<Sprite>();
 			chat.LogCreate(unitSprite);
 
 		}

@@ -22,8 +22,8 @@ public class AttackAction : Action
         var attacker = GameSystem.EntityManager.GetEntity(AttackerID);
         var defender = GameSystem.EntityManager.GetEntity(DefenderID);
 
-        var position = GameSystem.EntityManager.GetComponent<Position>(attacker);
-        var defenderPosition = GameSystem.EntityManager.GetComponent<Position>(defender);
+        var position = attacker.GetComponent<Position>();
+        var defenderPosition = defender.GetComponent<Position>();
 
         Killed = ApplyWeaponDamage(attacker, defender);
         
@@ -39,8 +39,8 @@ public class AttackAction : Action
     //Returns true if the defender's health reached 0
     bool ApplyWeaponDamage(Entity attacker, Entity defender)
     {
-        var weapon = GameSystem.EntityManager.GetComponent<Weapon>(attacker);
-        var defenderHealth = GameSystem.EntityManager.GetComponent<Health>(defender);
+        var weapon = attacker.GetComponent<Weapon>();
+        var defenderHealth = defender.GetComponent<Health>();
 
         if (weapon != null && defenderHealth != null)
         {
@@ -61,7 +61,7 @@ public class AttackAction : Action
     //Returns true if the attacker's movement speed is greater than or equal to its weapon range
     bool IsMoveAttacker(Entity entity)
     {
-        var movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
+        var movement = entity.GetComponent<Movement>();
         if (movement == null) return false;
 
         if (movement.isMoveAttacker) return true;
@@ -74,7 +74,7 @@ public class AttackAction : Action
         var attacker = GameSystem.EntityManager.GetEntity(AttackerID);
         Entity defender;
 
-        Position position = GameSystem.EntityManager.GetComponent<Position>(attacker);
+        Position position = attacker.GetComponent<Position>();
 
         if (Killed)
         {
@@ -92,8 +92,8 @@ public class AttackAction : Action
 
     void ReverseWeaponDamage(Entity attacker, Entity defender)
     {
-        Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(attacker);
-        Health defenderHealth = GameSystem.EntityManager.GetComponent<Health>(defender);
+        Weapon weapon = attacker.GetComponent<Weapon>();
+        Health defenderHealth = defender.GetComponent<Health>();
 
         if (weapon != null && defenderHealth != null)
         {

@@ -30,7 +30,7 @@ public class MovementHandler : IHandler
         movementComponentList.Clear();
         foreach (Entity entity in keys)
         {
-            Movement movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
+            Movement movement = entity.GetComponent<Movement>();
             if (movement != null) movementComponentList.Add(movement);
         }
     }
@@ -40,8 +40,8 @@ public class MovementHandler : IHandler
         Entity entity = GameSystem.EntityManager.GetEntity(moveAction.EntityID);
         Coords destination = new Coords(moveAction.DestinationX, moveAction.DestinationY);
 
-        Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
-        Movement movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
+        Position position = entity.GetComponent<Position>();
+        Movement movement = entity.GetComponent<Movement>();
 
         if (!GameSystem.Game.Turn.CheckEntityOwnedByActivePlayer(entity)) return false;
         if (!GameSystem.Map.IsPassable(destination)) return false;
@@ -74,7 +74,7 @@ public class MovementHandler : IHandler
     bool IsValidAttackAction(AttackAction attackAction)
     {
         Entity attacker = GameSystem.EntityManager.GetEntity(attackAction.AttackerID);
-        Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(attacker);
+        Weapon weapon = attacker.GetComponent<Weapon>();
         List<Entity> attackedEntities = Attack(attacker, weapon.attackType);
         foreach (Entity e in attackedEntities)
             Logging.Log("Attacked entity ID: " + e.ID);
@@ -88,14 +88,14 @@ public class MovementHandler : IHandler
 
     Entity CheckNearbyEnemies(Entity entity, Coords destination)
     {
-        Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(entity);
+        Weapon weapon = entity.GetComponent<Weapon>();
         var enemyUnits = Attack(entity, weapon.attackType);
 
         if (enemyUnits.Count > 0)
         {
             foreach (Entity enemyUnit in enemyUnits)
             {
-                Position enemyPosition = GameSystem.EntityManager.GetComponent<Position>(enemyUnit);
+                Position enemyPosition = enemyUnit.GetComponent<Position>();
                 if (enemyPosition.X == destination.X && enemyPosition.Y == destination.Y)
                     return enemyUnit;
             }
@@ -125,10 +125,10 @@ public class MovementHandler : IHandler
 
     public static bool CheckMovement(Entity destinationEntity, Entity movingEntity)
     {
-        Position position = GameSystem.EntityManager.GetComponent<Position>(movingEntity);
-        Movement movement = GameSystem.EntityManager.GetComponent<Movement>(movingEntity);
+        Position position = movingEntity.GetComponent<Position>();
+        Movement movement = movingEntity.GetComponent<Movement>();
 
-        Position destinationPositionComponent = GameSystem.EntityManager.GetComponent<Position>(destinationEntity);
+        Position destinationPositionComponent = destinationEntity.GetComponent<Position>();
         var destination = new Coords(destinationPositionComponent.X, destinationPositionComponent.Y);
 
         if (position == null || movement == null) return false;
@@ -172,22 +172,20 @@ public class MovementHandler : IHandler
         List<Entity> enemyUnitCollisions = new List<Entity>();
         if (entity == null) return enemyUnitCollisions;
 
-        var selectionList = GameSystem.EntityManager.GetComponentList(entity);
-
-        Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
+        Owner owner = entity.GetComponent<Owner>();
         if (owner == null) return enemyUnitCollisions;
         var ownedBy = (int)owner.ownedBy;
 
-        Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(selectionList);
+        Weapon weapon = entity.GetComponent<Weapon>();
         int range = (weapon != null) ? weapon.range : 0;
 
-        Position selectionPosition = GameSystem.EntityManager.GetComponent<Position>(selectionList);
+        Position selectionPosition = entity.GetComponent<Position>();
 
         List<Position> enemyPositions = new List<Position>();
 
         foreach (Entity enemyUnit in GameSystem.EntityManager.GetEnemyUnits(ownedBy))
         {
-            Position pos = GameSystem.EntityManager.GetComponent<Position>(enemyUnit);
+            Position pos = enemyUnit.GetComponent<Position>();
             if (pos != null) enemyPositions.Add(pos);
         }
 
@@ -229,7 +227,7 @@ public class MovementHandler : IHandler
     {
         foreach (Movement movement in movementComponentList)
         {
-            Name name = GameSystem.EntityManager.GetComponent<Name>(movement.Parent);
+            Name name = movement.Parent.GetComponent<Name>();
             if (name.name == "King" && movement.Disabled) movement.Disabled = false;
         }            
     }

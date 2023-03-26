@@ -14,10 +14,10 @@ public class UILabelHealth : UILabel
 
     string GetHealthAsString()
     {
-        var selected = GameSystem.Input.GetSelection();
+        Entity selected = GameSystem.Input.GetSelection();
         if (selected == null) return "";
 
-        Health healthComponent = GameSystem.EntityManager.GetComponent<Health>(selected);
+        Health healthComponent = selected.GetComponent<Health>();
         if (healthComponent == null) return "";
 
         (int currentHP, int maxHP) = GetHealth(healthComponent);

@@ -35,7 +35,7 @@ public class HealthHandler : IHandler
 
         foreach (Entity entity in keys)
         {
-            Health health = GameSystem.EntityManager.GetComponent<Health>(entity);
+            Health health = entity.GetComponent<Health>();
             if (health != null)
                 healthComponentList.Add(health);
         }
@@ -47,7 +47,7 @@ public class HealthHandler : IHandler
 
         foreach (Entity entity in keys)
         {
-            Health health = GameSystem.EntityManager.GetComponent<Health>(entity);
+            Health health = entity.GetComponent<Health>();
             if (health != null) healthComponentList.Add(health);
         }
     }
@@ -116,7 +116,7 @@ public class HealthHandler : IHandler
     //temporary - can put in own class if needed in future
     bool UnitIsKing(Entity entity)
     {
-        Name name = GameSystem.EntityManager.GetComponent<Name>(entity);
+        Name name = entity.GetComponent<Name>();
 
         if (name != null && name.name == "King")
             return true;
@@ -131,9 +131,8 @@ public class HealthHandler : IHandler
         foreach (Entity entity in entityList)
         {
             //Enemy units
-            List<Component> list = GameSystem.EntityManager.GetComponentList(entity);
-            Name name = GameSystem.EntityManager.GetComponent<Name>(list);
-            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(list);
+            Name name = entity.GetComponent<Name>();
+            Owner owner = entity.GetComponent<Owner>();
 
             if (name != null && owner != null
              && name.name == "King" && owner.ownedBy == (User)playerID)
@@ -148,7 +147,7 @@ public class HealthHandler : IHandler
     //temporary - can put in own class if needed in future
     void KingDead(Entity entity)
     {
-        Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
+        Owner owner = entity.GetComponent<Owner>();
 
         if (owner != null && KingCount((int)owner.ownedBy) <= 1)
         {

@@ -17,10 +17,10 @@ public class UILabelDamage : UILabel
 
 	string GetDamageAsString()
 	{
-		var selected = GameSystem.Input.GetSelection();
+		Entity selected = GameSystem.Input.GetSelection();
 		if (selected == null) return "";
 
-        Weapon weaponComponent = GameSystem.EntityManager.GetComponent<Weapon>(selected);
+        Weapon weaponComponent = selected.GetComponent<Weapon>();
 		if (weaponComponent == null) return "";
 
 		int damage = GetDamage(weaponComponent);

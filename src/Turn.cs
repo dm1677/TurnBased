@@ -151,7 +151,7 @@ public class Turn
 
 	public bool CheckEntityOwnedByActivePlayer(Entity entity)
 	{
-        Owner o = GameSystem.EntityManager.GetComponent<Owner>(entity);
+        Owner o = entity.GetComponent<Owner>();
         User owner = o.ownedBy;
 		User player = (User)GameSystem.Player.ID;
         User enemy = (User)GameSystem.Player.GetEnemyID();
@@ -165,7 +165,7 @@ public class Turn
 
     public bool MovingPlayerOwnsEntity(Entity entity)
     {
-        Owner o = GameSystem.EntityManager.GetComponent<Owner>(entity);
+        Owner o = entity.GetComponent<Owner>();
         User owner = o.ownedBy;
         User player = (User)GameSystem.Player.ID;
         User enemy = (User)GameSystem.Player.GetEnemyID();

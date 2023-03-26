@@ -9,13 +9,13 @@ public class UILabelName : UILabel
 
     public override void Update()
     {
-        var selected = GameSystem.Input.GetSelection();
+        Entity selected = GameSystem.Input.GetSelection();
 
         if (selected == null)
             Label.Text = "";
         else
         {
-            Name nameComponent = GameSystem.EntityManager.GetComponent<Name>(selected);
+            Name nameComponent = selected.GetComponent<Name>();
             if (nameComponent != null)
                 Label.Text = nameComponent.name;
         }

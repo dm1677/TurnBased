@@ -198,7 +198,7 @@ public class InputHelper
         {
             foreach(Entity entity in GameSystem.EntityManager.GetEntityList().Keys)
             {
-                Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
+                Position position = entity.GetComponent<Position>();
                 if (position != null && position.X == a.unit.X && position.Y == a.unit.Y)
                     return new MoveAction(entity.ID, a.x, a.y);
             }
@@ -208,7 +208,7 @@ public class InputHelper
             Entity attacker = null, defender = null;
             foreach (Entity entity in GameSystem.EntityManager.GetEntityList().Keys)
             {
-                Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
+                Position position = entity.GetComponent<Position>();
                 if (position != null && position.X == b.attacker.X && position.Y == b.attacker.Y)
                     attacker = entity;
                 if (position != null && position.X == b.defender.X && position.Y == b.defender.Y)
@@ -248,14 +248,14 @@ public class InputHelper
         foreach (Entity otherEntity in GameSystem.EntityManager.GetEntityList().Keys)
         {
             if (otherEntity == entity) continue;
-            Position otherEntityPosition = GameSystem.EntityManager.GetComponent<Position>(otherEntity);
+            Position otherEntityPosition = otherEntity.GetComponent<Position>();
 
             if (otherEntityPosition == null
                 || otherEntityPosition.X != mousePos.X
                 || otherEntityPosition.Y != mousePos.Y)
                 continue;
 
-            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(otherEntity);
+            Owner owner = otherEntity.GetComponent<Owner>();
             if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(otherEntity))
                 return new SwapAction(entity.ID, otherEntity.ID);
             else if (owner != null && owner.ownedBy != User.Neutral)

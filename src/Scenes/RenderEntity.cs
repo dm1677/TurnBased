@@ -77,11 +77,11 @@ class RenderEntity : Godot.Sprite
     void CheckSetComponents()
     {
         if (ownerComponent == null)
-            ownerComponent = GameSystem.EntityManager.GetComponent<Owner>(entity);
+            ownerComponent = entity.GetComponent<Owner>();
         if(spriteComponent == null)
-            spriteComponent = GameSystem.EntityManager.GetComponent<Sprite>(entity);
+            spriteComponent = entity.GetComponent<Sprite>();
         if(positionComponent == null)
-            positionComponent = GameSystem.EntityManager.GetComponent<Position>(entity);
+            positionComponent = entity.GetComponent<Position>();
         if (spriteComponent != null && Texture == null)
             Texture = (Texture)GD.Load(spriteComponent.path);
 

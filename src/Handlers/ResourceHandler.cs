@@ -65,7 +65,7 @@ public class ResourceHandler : IHandler
         var list = GameSystem.EntityManager.GetEntityList().Keys;
         foreach (Entity entity in list)
         {
-            var resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
+            var resource = entity.GetComponent<GResource>();
             if (resource != null) resourceList.Add(resource);
         }
     }

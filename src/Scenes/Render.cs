@@ -162,21 +162,21 @@ public class Render : Node2D, IObserver
 		if (entity == null || entity.QueuedForDeletion) return;
 		ClearPreviews();
 
-		Movement movement = GameSystem.EntityManager.GetComponent<Movement>(entity);
-		Position position = GameSystem.EntityManager.GetComponent<Position>(entity);
-		Owner owner    = GameSystem.EntityManager.GetComponent<Owner>(entity);
+		Movement movement = entity.GetComponent<Movement>();
+		Position position = entity.GetComponent<Position>();
+		Owner owner = entity.GetComponent<Owner>();
 
 		if (owner != null && owner.ownedBy != (User)playerID)
 			return;
 
 		//attacks
-		Weapon weapon = GameSystem.EntityManager.GetComponent<Weapon>(entity);
+		Weapon weapon = entity.GetComponent<Weapon>();
 		if (weapon == null) return;
 
 		var list = MovementHandler.Attack(entity, weapon.attackType);
 		foreach (Entity e in list)
 		{
-			Position pos = GameSystem.EntityManager.GetComponent<Position>(e);
+			Position pos = e.GetComponent<Position>();
 			if (pos == null) continue;
 			attackPreview.Add(new Vector2(pos.X * tileSize, pos.Y * tileSize));
 		}
@@ -231,14 +231,14 @@ public class Render : Node2D, IObserver
 	{
 		List<Vector2> list = new List<Vector2>();
 
-		Swap swap = GameSystem.EntityManager.GetComponent<Swap>(entity);
+		Swap swap = entity.GetComponent<Swap>();
 		if (swap != null)
 		{
 			foreach (Entity e in GameSystem.EntityManager.GetEntityList().Keys)
 			{
 				if (!PlayerCanUseEntity(e)) continue;
 
-				Position position = GameSystem.EntityManager.GetComponent<Position>(e);
+				Position position = e.GetComponent<Position>();
 				if (position == null) continue;
 
 				list.Add(new Vector2(position.X * tileSize, position.Y * tileSize));
@@ -250,9 +250,9 @@ public class Render : Node2D, IObserver
 			{
 				if (!PlayerCanUseEntity(e)) continue;
 
-				Position position = GameSystem.EntityManager.GetComponent<Position>(e);
+				Position position = e.GetComponent<Position>();
 				if (position == null) continue;
-				Swap swap2 = GameSystem.EntityManager.GetComponent<Swap>(e);
+				Swap swap2 = e.GetComponent<Swap>();
 				if (swap2 == null) continue;
 
 				list.Add(new Vector2(position.X * tileSize, position.Y * tileSize));
@@ -266,7 +266,7 @@ public class Render : Node2D, IObserver
 	//Returns true if the entity is owned by the player, and it is the player's turn
 	bool PlayerCanUseEntity(Entity entity)
 	{
-		Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
+		Owner owner = entity.GetComponent<Owner>();
 		User ownedBy = owner.ownedBy;
 
 		if (entity != null
@@ -320,7 +320,7 @@ public class Render : Node2D, IObserver
 
 		if (action is CreateAction createAction)
 		{
-			Position position = GameSystem.EntityManager.GetComponent<Position>(createAction.CreatedEntity);
+			Position position = createAction.CreatedEntity.GetComponent<Position>();
 
 			lastMoveFirst = new Vector2(position.X * +tileSize, position.Y * tileSize);
 			lastMoveSecond = new Vector2(-1,-1);

@@ -187,7 +187,7 @@ public class EntityManager
         List<Position> positions = new List<Position>();
         foreach (Entity entity in GetEntityList().Keys)
         {
-            var position = GetComponent<Position>(entity);
+            var position = entity.GetComponent<Position>();
 
             if (position!=null) positions.Add(position);
         }
@@ -200,9 +200,8 @@ public class EntityManager
     /// <summary>Returns true if an entity has both a Position and a Movement component</summary>
     public bool IsUnit(Entity entity)
     {
-        var list = GetComponentList(entity);
-        var position = GetComponent<Position>(list);
-        var movement = GetComponent<Movement>(list);
+        var position = entity.GetComponent<Position>();
+        var movement = entity.GetComponent<Movement>();
 
         if (position != null && movement != null)
             return true;
@@ -219,10 +218,9 @@ public class EntityManager
         foreach (Entity entity in entityList)
         {
             //Enemy units
-            var list = GetComponentList(entity);
-            var position = GetComponent<Position>(list);
-            var health = GetComponent<Health>(list);
-            var owner = GetComponent<Owner>(list);
+            var position = entity.GetComponent<Position>();
+            var health = entity.GetComponent<Health>();
+            var owner = entity.GetComponent<Owner>();
 
             if ((position != null && health != null && owner != null)
               &&(owner.ownedBy != (User)playerID && owner.ownedBy != User.Neutral))
@@ -234,42 +232,19 @@ public class EntityManager
         return enemyUnits;
     }
 
-    public TComponent GetComponent<TComponent>(List<Component> list) where TComponent : Component
-    {
-        foreach (Component component in list)
-        {
-            if (component is TComponent && !component.Disabled)
-                return (TComponent)component;
-        }
-        return null;
-    }
-
-    public TComponent GetComponent<TComponent>(Entity entity) where TComponent : Component
-    {
-        return GetComponent<TComponent>(GetComponentList(entity));
-    }
-
     public TComponent GetComponent<TComponent>(int entityID) where TComponent : Component
     {
-        return GetComponent<TComponent>(GetEntity(entityID));
+        return GetEntity(entityID).GetComponent<TComponent>();
     }
 
     //Can return inactive components -- be careful!!!
     public TComponent TryGetComponent<TComponent>(int entityID) where TComponent : Component
     {
         Entity entity = GetEntity(entityID);
-        List<Component> list;
+        if (entity == null) entity = GetInactiveEntity(entityID);
+        if (entity == null) return null;
 
-        if (entity == null)
-        {
-            entity = GetInactiveEntity(entityID);
-            if (entity == null) return null;
-            list = GetInactiveComponentList(entity);
-        }
-        else
-            list = GetComponentList(entity);
-
-        return GetComponent<TComponent>(list);
+        return entity.GetComponent<TComponent>();
     }
 
     public bool QueueForDeletion(Entity entity)

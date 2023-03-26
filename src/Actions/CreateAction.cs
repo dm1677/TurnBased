@@ -64,8 +64,8 @@ public class CreateAction : Action
 
         foreach (Entity entity in entityList)
         {
-            GResource resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
-            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
+            GResource resource = entity.GetComponent<GResource>();
+            Owner owner = entity.GetComponent<Owner>();
 
             if (owner != null && resource != null && owner.ownedBy == owningPlayer)
             {
@@ -83,8 +83,8 @@ public class CreateAction : Action
 
         foreach (Entity entity in entityList)
         {
-            GResource resource = GameSystem.EntityManager.GetComponent<GResource>(entity);
-            Owner owner = GameSystem.EntityManager.GetComponent<Owner>(entity);
+            GResource resource = entity.GetComponent<GResource>();
+            Owner owner = entity.GetComponent<Owner>();
 
             if (owner != null && resource != null && owner.ownedBy == owningPlayer)
             {
