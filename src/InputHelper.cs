@@ -258,7 +258,7 @@ public class InputHelper
             Owner owner = GameSystem.EntityManager.GetComponent<Owner>(otherEntity);
             if (GameSystem.Game.Turn.MovingPlayerOwnsEntity(otherEntity))
                 return new SwapAction(entity.ID, otherEntity.ID);
-            else if (owner.ownedBy != User.Neutral)
+            else if (owner != null && owner.ownedBy != User.Neutral)
                 return new AttackAction(entity.ID, otherEntity.ID);
         }
         return new MoveAction(entity.ID, mousePos.X, mousePos.Y);
